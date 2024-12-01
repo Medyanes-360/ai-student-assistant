@@ -24,7 +24,9 @@ export default function AudioRecorder({ onRecordingComplete }) {
   const stopRecording = useCallback(() => {
     if (mediaRecorderRef.current) {
       mediaRecorderRef.current.stop();
-      audioRef?.current?.srcObject?.getTracks().forEach((track) => track.stop());
+      audioRef?.current?.srcObject
+        ?.getTracks()
+        .forEach((track) => track.stop());
     }
     resetState();
   }, []);
@@ -47,7 +49,9 @@ export default function AudioRecorder({ onRecordingComplete }) {
   const startRecording = async () => {
     try {
       setErrorMessage(""); // Reset error message
-      const stream = await navigator?.mediaDevices.getUserMedia({ audio: true });
+      const stream = await navigator?.mediaDevices.getUserMedia({
+        audio: true,
+      });
       audioRef.current.srcObject = stream;
 
       const mediaRecorder = new MediaRecorder(stream);
@@ -139,7 +143,7 @@ export default function AudioRecorder({ onRecordingComplete }) {
       )}
 
       {userAudioUrl && !isRecording && (
-        <div className="mt-4 p-4 bg-green-200 rounded-lg shadow-lg max-w-xs text-center">
+        <div className="mt-4 p-4  rounded-lg shadow-lg max-w-xs text-center">
           <p className="text-sm font-semibold">Ses kaydınız tamamlandı!</p>
           <audio controls src={userAudioUrl} className="mt-2" />
         </div>
