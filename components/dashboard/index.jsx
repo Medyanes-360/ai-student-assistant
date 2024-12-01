@@ -18,7 +18,7 @@ const Dashboard = ({ status }) => {
   }
   return (
     <div className="container mx-auto py-10">
-      <div className="m-2 flex space-y-10 lg:items-stretch gap-4 rounded-lg border-2 border-[#f4f4f4b9] md:flex-col md:items-start  ">
+      <div className="m-2 flex space-y-10 lg:items-stretch gap-4  md:flex-col md:items-start  ">
         <LanguageDevelopment />
       </div>
     </div>

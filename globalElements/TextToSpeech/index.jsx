@@ -9,7 +9,7 @@ const TextToSpeech = ({ text }) => {
     const synth = window.speechSynthesis;
     // Function to filter emojis
     const cleanText = (input) =>
-      input.replace(
+      input?.replace(
         /[\u{1F600}-\u{1F6FF}|\u{2600}-\u{26FF}|\u{2700}-\u{27BF}]/gu,
         ""
       );
@@ -20,7 +20,7 @@ const TextToSpeech = ({ text }) => {
     u.volume = 0.5;
     // Handle voices
     const setVoice = () => {
-      const voices = synth.getVoices();
+      const voices = synth?.getVoices();
       const femaleVoice = voices.find(
         (voice) => voice.name.includes("Female") || voice.name.includes("en-US")
       );

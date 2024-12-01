@@ -129,11 +129,13 @@ export default function Register() {
               <NextButton
                 type="submit"
                 disabled={loading}
-                className={`w-full bg-black text-white p-2 rounded-md hover:bg-gray-800 focus:outline-none focus:bg-black focus:ring-2 focus:ring-offset-2 focus:ring-gray-900 transition-colors duration-300 ${
-                  loading ? "opacity-50 cursor-not-allowed" : "cursor-pointer"
+                className={`w-full flex items-center justify-center  text-white p-2 rounded-md focus:outline-none focus:bg-black focus:ring-2 focus:ring-offset-2 focus:ring-gray-900 transition-colors duration-300 ${
+                  loading
+                    ? "bg-gray-600 cursor-not-allowed"
+                    : "cursor-pointer bg-black hover:bg-gray-800"
                 }`}
               >
-                {loading ? "Saving..." : " Sign Up"}
+                {loading ? <FaSpinner className="animate-spin" /> : " Sign Up"}
               </NextButton>
             </div>
             <div>

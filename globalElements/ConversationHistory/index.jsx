@@ -1,5 +1,4 @@
 "use client";
-
 import React, { useEffect, useState } from "react";
 import { SiGoogleassistant } from "react-icons/si";
 import { RiChatHistoryLine } from "react-icons/ri";
@@ -61,17 +60,7 @@ const ConversationHistory = () => {
   const handleTextSelection = async () => {
     const selection = window.getSelection().toString();
     if (selection) {
-      const response = await fetch("/api/translate/create", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ selection }),
-      });
-
-      const { translation, synonyms } = await response.json();
-
-      setSelectedText({ selection, translation, synonyms });
+      setSelectedText(selection);
     }
     return null;
   };

@@ -24,7 +24,7 @@ export default function AudioRecorder({ onRecordingComplete }) {
   const stopRecording = useCallback(() => {
     if (mediaRecorderRef.current) {
       mediaRecorderRef.current.stop();
-      audioRef.current.srcObject?.getTracks().forEach((track) => track.stop());
+      audioRef?.current?.srcObject?.getTracks().forEach((track) => track.stop());
     }
     resetState();
   }, []);
@@ -47,7 +47,7 @@ export default function AudioRecorder({ onRecordingComplete }) {
   const startRecording = async () => {
     try {
       setErrorMessage(""); // Reset error message
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      const stream = await navigator?.mediaDevices.getUserMedia({ audio: true });
       audioRef.current.srcObject = stream;
 
       const mediaRecorder = new MediaRecorder(stream);
