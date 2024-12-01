@@ -11,7 +11,7 @@ export default function Login() {
   if (status === "loading") {
     return <Loading />;
   }
-
+  
   return (
     <section className="flex h-screen">
       <div className="hidden lg:flex items-center justify-center flex-1 bg-white text-black">

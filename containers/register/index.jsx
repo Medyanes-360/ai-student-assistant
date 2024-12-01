@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import NextButton from "@/globalElements/Button";
 import { postAPI } from "@/services/fetchApi";
 import registerImage from "@/public/images/auth.webp";
@@ -8,17 +8,28 @@ import Input from "@/globalElements/Input";
 import Label from "@/globalElements/Label";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
+import Loading from "@/components/loading";
 export default function Register() {
+  const { status } = useSession();
   const router = useRouter();
+  const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(false);
   const [fields, setFields] = React.useState({
     name: "",
     email: "",
     password: "",
   });
 
-  const [message, setMessage] = useState("");
-  const [loading, setLoading] = useState(false);
+  useEffect(() => {
+    if (status === "authenticated") {
+      router.push("/login");
+    }
+  }, [status, router]);
 
+  if (status === "loading") {
+    return <Loading />;
+  }
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFields({

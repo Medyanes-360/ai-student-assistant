@@ -6,6 +6,7 @@ import React, { useEffect } from "react";
 import Image from "next/image";
 import { Tooltip } from "react-tooltip";
 import "react-tooltip/dist/react-tooltip.css";
+import TextToSpeech from "@/globalElements/TextToSpeech";
 
 const AudioRecorder = dynamic(() => import("@/globalElements/AudioRecorder"), {
   ssr: false,
@@ -104,29 +105,27 @@ const LanguageDevelopment = () => {
     <>
       <div className="flex  m-4">
         <div className="bg-[#F4F4F4] h-full dark:bg-gray-800 rounded-lg shadow-lg p-8 w-full flex-grow-0 flex-shrink-0 basis-[70%] transition duration-200">
-          <h1 className="text-2xl sm:text-3xl font-bold text-center text-gray-800 dark:text-gray-100 mb-6">
-            İngilizce Dil Geliştirme
-          </h1>
-
           {transcribedText && (
-            <div className="mt-8">
+            <div className="mt-8 flex flex-col gap-y-2">
               <h2 className="text-xl sm:text-2xl font-semibold text-gray-800 dark:text-gray-200 mb-4">
                 Senin Metnin:
               </h2>
               <p className="text-gray-700 dark:text-gray-300 whitespace-pre-wrap">
                 {renderTextWithTooltips(transcribedText)}
               </p>
+              <TextToSpeech text={transcribedText} />
             </div>
           )}
 
           {feedback && (
-            <div className="mt-8">
+            <div className="mt-8 flex flex-col gap-y-2">
               <h2 className="text-xl sm:text-2xl font-semibold text-gray-800 dark:text-gray-200 mb-4">
                 Geri Bildirim:
               </h2>
               <p className="text-gray-700 dark:text-gray-300 whitespace-pre-wrap">
                 {renderTextWithTooltips(feedback)}
               </p>
+              <TextToSpeech text={feedback} />
             </div>
           )}
         </div>

@@ -113,10 +113,12 @@ export default function AudioRecorder({ onRecordingComplete }) {
 
   return (
     <div className="flex flex-col items-center">
-      <div className="flex items-end justify-center">
+      <div className="flex items-center flex-col justify-center">
         <button
           onClick={isRecording ? stopRecording : startRecording}
-          className={`px-6 py-6 mt-4 rounded-full font-semibold shadow-lg transition duration-200 transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-opacity-50 ${
+          aria-pressed={isRecording}
+          type="button"
+          className={`px-6 py-4 sm:py-6 mt-4 rounded-full font-semibold shadow-lg transition duration-200 transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-opacity-50 ${
             isRecording
               ? "bg-red-600 hover:bg-red-700 focus:ring-red-500"
               : "bg-blue-600 hover:bg-blue-700 focus:ring-blue-500"
@@ -129,7 +131,9 @@ export default function AudioRecorder({ onRecordingComplete }) {
           )}
         </button>
         {recordingTime > 0 && (
-          <span className="text-red-700 ml-4">{formatTime(recordingTime)}</span>
+          <span className="text-red-700 ml-4 block mt-2">
+            {formatTime(recordingTime)}
+          </span>
         )}
       </div>
 
@@ -142,15 +146,16 @@ export default function AudioRecorder({ onRecordingComplete }) {
         </div>
       )}
 
-      {userAudioUrl && !isRecording && (
+      {userAudioUrl && (
         <div className="mt-4 p-4  rounded-lg shadow-lg max-w-xs text-center">
           <p className="text-sm font-semibold">Ses kaydınız tamamlandı!</p>
-          <audio controls src={userAudioUrl} className="mt-2" />
         </div>
       )}
 
       {errorMessage && (
-        <div className="mt-4 text-red-600 font-semibold">{errorMessage}</div>
+        <div className="mt-4 text-red-600 font-semibold text-center  text-2xl">
+          {errorMessage}
+        </div>
       )}
 
       {/* Hidden audio element for microphone stream */}
