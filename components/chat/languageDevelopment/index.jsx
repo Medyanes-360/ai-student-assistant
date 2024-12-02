@@ -145,8 +145,13 @@ const LanguageDevelopment = () => {
           id="tooltip"
           place="top"
           effect="solid"
-          className="text-sm bg-black text-white p-2 rounded-md z-10  absolute"
-          style={{ maxWidth: "none", position: "absolute" }}
+          className="text-lg bg-white text-gray-800 p-4 rounded-lg shadow-lg z-10 absolute"
+          style={{
+            width: "500px",
+            height: "500px", // Adjust the width of the tooltip card
+            position: "absolute",
+            border: "1px solid #e2e2e2", // Optional: Add a subtle border
+          }}
         />
       </div>
     </>
