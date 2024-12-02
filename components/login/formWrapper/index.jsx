@@ -39,7 +39,7 @@ const FormLoginWrapper = () => {
           email: "",
           password: "",
         });
-        router.push("/dashboard");
+        router.push("/chat");
         setSuccess("Giriş başarılı");
       } else {
         setError("Wrong Cridentials");

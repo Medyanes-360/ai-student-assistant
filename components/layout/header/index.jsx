@@ -13,7 +13,6 @@ export default function Header() {
 
   const handleClickOutside = React.useCallback((event) => {
     if (openRef.current && !openRef.current.contains(event.target)) {
-      console.log("Clicked outside!");
       setOpen(false);
     }
   }, []);
@@ -32,9 +31,11 @@ export default function Header() {
           <Link href="/">SpeakBuddy</Link>
         </h1>
         <div className="flex items-center space-x-4">
-          {status === "authenticated" ? (
+          {status === "loading" ? (
+            <div></div>
+          ) : status === "authenticated" ? (
             <div className="flex items-center space-x-4">
-              <Link href="/history">
+              <Link href="/chat-history">
                 <NextButton className="text-sm sm:text-base bg-indigo-500 hover:bg-indigo-600 text-white py-2 px-4 rounded-lg transition duration-150 ease-in-out">
                   Chat History
                 </NextButton>
@@ -44,19 +45,19 @@ export default function Header() {
                   <IoSettings />
                 </button>
                 {open && (
-                  <div className="absolute mt-5 top-5 right-0 flex flex-col border transition-all bg-white max-w-fit rounded-md shadow-sm">
+                  <div className="absolute mt-5 top-5 right-0 flex flex-col border transition-all bg-white max-w-fit rounded-md shadow-sm text-center">
                     {/* <span className="text-black whitespace-nowrap text-base border-b border-solid border-blue-100 p-2 block">
                       Hoş geldin <b>{data.user.name}</b>
                     </span> */}
                     <Link
                       href={"/dashboard"}
-                      className="text-black whitespace-nowrap text-base border-bp-2 hover:bg-red-50 transition-all duration-300 block w-full h-full p-3  text-start"
+                      className="text-black whitespace-nowrap text-base border-bp-2 hover:bg-red-50 transition-all duration-300 block w-full h-full p-3  border-b border-black/20"
                     >
                       Dashboard
                     </Link>
                     <button
                       onClick={() => signOut({ callbackUrl: "/login" })}
-                      className="text-black whitespace-nowrap text-base border-bp-2 hover:bg-red-50 transition-all duration-300 block w-full h-full p-3  text-start"
+                      className="text-black whitespace-nowrap text-base border-bp-2 hover:bg-red-50 transition-all duration-300 block w-full h-full p-3  "
                     >
                       Sign Out
                     </button>

@@ -33,6 +33,9 @@ export default NextAuth({
   session: {
     strategy: "jwt",
   },
+  pages: {
+    signIn: '/login',
+  },
   callbacks: {
     async session({ session, token }) {
       session.user.id = token.sub;

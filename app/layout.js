@@ -1,7 +1,6 @@
 import Providers from "@/providers";
 import "@/styles/globals.css";
 import { Inter } from "next/font/google";
-import Head from "next/head";
 const inter = Inter({
   subsets: ["latin"],
   display: "swap",
@@ -16,9 +15,11 @@ export const metadata = {
 export default function RootLayout({ children, session }) {
   return (
     <html lang="en">
-      <Providers session={session}>
-        <body className={inter.className}>{children}</body>
-      </Providers>
+      <body className={inter.className}>
+        <Providers session={session}>
+          {children}
+        </Providers>
+      </body>
     </html>
   );
 }
