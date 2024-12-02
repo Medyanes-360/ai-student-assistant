@@ -15,5 +15,14 @@ module.exports = {
       },
     },
   },
-  plugins: [],
+  plugins: [
+    function ({ addUtilities }) {
+      addUtilities({
+        '.no-context': {
+          '-webkit-user-select': 'none',
+          '-webkit-touch-callout': 'none',
+        },
+      });
+    },
+  ],
 };

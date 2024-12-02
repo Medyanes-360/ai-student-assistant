@@ -21,6 +21,7 @@ export default function AudioRecorder({ onRecordingComplete }) {
   const audioChunksRef = useRef([]);
   const timerRef = useRef(null);
   const timeoutRef = useRef(null);
+
   const stopRecording = useCallback(() => {
     if (mediaRecorderRef.current) {
       mediaRecorderRef.current.stop();
@@ -115,10 +116,13 @@ export default function AudioRecorder({ onRecordingComplete }) {
     <div className="flex flex-col items-center">
       <div className="flex items-center flex-col justify-center">
         <button
-          onClick={isRecording ? stopRecording : startRecording}
+          onMouseDown={startRecording}
+          onMouseUp={stopRecording}
+          onTouchStart={startRecording}
+          onTouchEnd={stopRecording}
           aria-pressed={isRecording}
           type="button"
-          className={`px-6 py-4 sm:py-6 mt-4 rounded-full font-semibold shadow-lg transition duration-200 transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-opacity-50 ${
+          className={`px-6 py-4 sm:py-6 aspect-square rounded-full font-semibold shadow-lg transition duration-200 transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-opacity-50 no-context ${
             isRecording
               ? "bg-red-600 hover:bg-red-700 focus:ring-red-500"
               : "bg-blue-600 hover:bg-blue-700 focus:ring-blue-500"
@@ -131,7 +135,7 @@ export default function AudioRecorder({ onRecordingComplete }) {
           )}
         </button>
         {recordingTime > 0 && (
-          <span className="text-red-700 ml-4 block mt-2">
+          <span className="text-red-700 flex justify-center items-center pt-2">
             {formatTime(recordingTime)}
           </span>
         )}

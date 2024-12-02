@@ -131,7 +131,7 @@ const LanguageDevelopment = () => {
         </div>
 
         <div className="flex-1">
-          <div className="flex items-center flex-col ">
+          <div className="flex items-center flex-col gap-4">
             <Image
               src="/images/person.jpeg"
               alt="person"
