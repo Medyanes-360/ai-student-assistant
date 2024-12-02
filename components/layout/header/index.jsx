@@ -24,6 +24,7 @@ export default function Header() {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [handleClickOutside]);
+
   return (
     <header className="border-b min-h-[80px] flex items-center  p-4 bg-gray-800 text-white dark:bg-gray-900 dark:text-gray-100">
       <div className="container mx-auto flex justify-between items-center ">
@@ -44,14 +45,20 @@ export default function Header() {
                 </button>
                 {open && (
                   <div className="absolute mt-5 top-5 right-0 flex flex-col border transition-all bg-white max-w-fit rounded-md shadow-sm">
-                    <span className="text-black whitespace-nowrap text-base border-b border-solid border-blue-100 p-2 block">
+                    {/* <span className="text-black whitespace-nowrap text-base border-b border-solid border-blue-100 p-2 block">
                       Hoş geldin <b>{data.user.name}</b>
-                    </span>
+                    </span> */}
+                    <Link
+                      href={"/"}
+                      className="text-black whitespace-nowrap text-base border-bp-2 hover:bg-red-50 transition-all duration-300 block w-full h-full p-3  text-start"
+                    >
+                      Dashboard
+                    </Link>
                     <button
                       onClick={() => signOut({ callbackUrl: "/login" })}
-                      className="text-black whitespace-nowrap text-base border-bp-2 hover:bg-red-50 block w-full h-full p-3  text-start"
+                      className="text-black whitespace-nowrap text-base border-bp-2 hover:bg-red-50 transition-all duration-300 block w-full h-full p-3  text-start"
                     >
-                      Çıkış Yap
+                      Sign Out
                     </button>
                   </div>
                 )}
