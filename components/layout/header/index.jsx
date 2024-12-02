@@ -49,7 +49,7 @@ export default function Header() {
                       Hoş geldin <b>{data.user.name}</b>
                     </span> */}
                     <Link
-                      href={"/"}
+                      href={"/dashboard"}
                       className="text-black whitespace-nowrap text-base border-bp-2 hover:bg-red-50 transition-all duration-300 block w-full h-full p-3  text-start"
                     >
                       Dashboard

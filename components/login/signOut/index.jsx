@@ -7,7 +7,7 @@ const ConfirmSignout = () => {
   return (
     <div className="max-w-md w-full p-6">
       <h1 className="text-3xl font-semibold mb-6 text-black text-center">
-        Sizin hesabınız var lütfen çıkış yapın
+        Zaten giriş yaptınız, lütfen çıkış yapın.
       </h1>
 
       <div className="flex flex-col gap-y-3 justify-center w-full items-center">

@@ -16,14 +16,6 @@ export const metadata = {
 export default function RootLayout({ children, session }) {
   return (
     <html lang="en">
-      <Head>
-        <link
-          rel="icon"
-          type="image/svg"
-          sizes="32x32"
-          href="/public/openai-logo.svg"
-        />
-      </Head>
       <Providers session={session}>
         <body className={inter.className}>{children}</body>
       </Providers>

@@ -6,8 +6,12 @@ import Label from "@/globalElements/Label";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { FaSpinner } from "react-icons/fa6";
-import { signIn } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
+import ConfirmSignout from "../signOut";
+
 const FormLoginWrapper = () => {
+  const { data: session, status } = useSession();
+
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState("");
@@ -35,10 +39,10 @@ const FormLoginWrapper = () => {
           email: "",
           password: "",
         });
-        router.push("/");
+        router.push("/dashboard");
         setSuccess("Giriş başarılı");
       } else {
-        setError("your credentials is not correctly");
+        setError("Wrong Cridentials");
       }
     } catch (error) {
       console.log(error);
@@ -47,6 +51,12 @@ const FormLoginWrapper = () => {
       setLoading(false);
     }
   };
+
+  if (status === "loading") {
+    return <FaSpinner className="animate-spin" />;
+  } else if (status === "authenticated") {
+    return <ConfirmSignout />;
+  }
 
   return (
     <div className="max-w-md w-full p-6">
