@@ -4,6 +4,7 @@ import { SiGoogleassistant } from "react-icons/si";
 import { RiChatHistoryLine } from "react-icons/ri";
 import { useDashboardStore } from "@/utils/dasboardStore";
 import TextToSpeech from "../TextToSpeech";
+import { SiGoogletranslate } from "react-icons/si";
 
 const ConversationHistory = () => {
   const { refresh, feedback, transcribedText } = useDashboardStore();
@@ -93,13 +94,15 @@ const ConversationHistory = () => {
                 </p>
               </div>
 
-              {/* Asistan Mesajı */}
-              <div className="self-start max-w-[70%] relative  bg-[#EEEEEE] dark:bg-gray-700 text-gray-800 dark:text-gray-200 p-4   rounded-tl-[40px] rounded-bt-[40px] rounded-br-[40px] rounded-tr-[40px] shadow-md">
+              <div className="self-start max-w-[70%] relative bg-[#EEEEEE] dark:bg-gray-700 text-gray-800 dark:text-gray-200 p-4 rounded-tl-[40px] rounded-bt-[40px] rounded-br-[40px] rounded-tr-[40px] shadow-md">
                 <p className="text-base">{conv.assistantResponse}</p>
                 <p className="text-xs mb-2 text-gray-500 dark:text-gray-400 mt-1">
                   {new Date(conv.createdAt).toLocaleString()}
                 </p>
                 <TextToSpeech text={conv.assistantResponse} />
+
+                <SiGoogletranslate className="absolute bottom-3 right-5 w-6 h-6 text-white cursor-pointer hover:text-blue-500" />
+
                 <div className="absolute -bottom-5 -left-6">
                   <SiGoogleassistant className="w-6 h-6" />
                 </div>
