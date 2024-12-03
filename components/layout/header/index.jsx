@@ -39,16 +39,16 @@ export default function Header() {
           ) : status === "authenticated" ? (
             <div className="flex items-center space-x-4">
               {/* Pathname'e göre linki dinamik olarak değiştirir */}
-              {pathname === "/chat-history" ? (
-                <Link href="/chat">
-                  <NextButton className="text-sm sm:text-base bg-indigo-500 hover:bg-indigo-600 text-white py-2 px-4 rounded-lg transition duration-150 ease-in-out">
-                    Chat
-                  </NextButton>
-                </Link>
-              ) : (
+              {pathname === "/chat" ? (
                 <Link href="/chat-history">
                   <NextButton className="text-sm sm:text-base bg-indigo-500 hover:bg-indigo-600 text-white py-2 px-4 rounded-lg transition duration-150 ease-in-out">
                     Chat History
+                  </NextButton>
+                </Link>
+              ) : (
+                <Link href="/chat">
+                  <NextButton className="text-sm sm:text-base bg-indigo-500 hover:bg-indigo-600 text-white py-2 px-4 rounded-lg transition duration-150 ease-in-out">
+                    Chat
                   </NextButton>
                 </Link>
               )}
