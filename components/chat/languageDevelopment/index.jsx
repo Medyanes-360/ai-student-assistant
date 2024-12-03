@@ -52,7 +52,7 @@ const LanguageDevelopment = () => {
 
   return (
     <>
-      <div className="flex  flex-col-reverse gap-3 lg:flex-row  w-full">
+      <div className="flex  flex-col-reverse gap-3 lg:flex-row pt-[80px] w-full">
         <div className="bg-[#F4F4F4] h-full dark:bg-gray-800 rounded-lg shadow-lg p-8 w-full flex-grow-0 flex-shrink-0 basis-[70%] transition duration-200">
           {userText && (
             <div className="mt-8 flex flex-col gap-y-2">
