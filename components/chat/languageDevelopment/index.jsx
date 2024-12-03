@@ -34,6 +34,69 @@ const LanguageDevelopment = () => {
       return () => audio.pause();
     }
   }, [aiAudioUrl]);
+  //
+  //word data : you kelimesine tıklayınca örneği görebilirsiniz.
+  const wordData = {
+    you: {
+      pronunciation: "yuː",
+      translations: ["Sen", "Siz"],
+      examples: ["How are you?", "I see you."],
+    },
+    Hello: {
+      pronunciation: "həˈləʊ",
+      translations: ["Merhaba"],
+      examples: ["Hello, how are you?", "Hello everyone!"],
+    },
+    today: {
+      pronunciation: "təˈdeɪ",
+      translations: ["Bugün"],
+      examples: ["What are you doing today?", "Today is a great day!"],
+    },
+  };
+
+  // Tooltip içeriğini dinamik olarak oluşturma fonksiyonu
+  const getTooltipContent = (word) => {
+    const content = wordData[word.toLowerCase()];
+    if (!content) return "Bu kelime için bilgi yok.";
+    return `
+        <div style="padding: 16px; max-width: 300px;">
+          <h3 style="font-size: 18px; margin-bottom: 8px; font-weight: bold;">${word}</h3>
+          <p style="margin: 0;"><strong>Pronunciation:</strong> ${
+            content.pronunciation
+          }</p>
+          <p style="margin: 0;"><strong>Translations:</strong> ${content.translations.join(
+            ", "
+          )}</p>
+          <p><strong>Examples:</strong></p>
+          <ul style="padding-left: 20px; margin: 0;">
+            ${content.examples.map((example) => `<li>${example}</li>`).join("")}
+          </ul>
+          <div style="display: flex; justify-content: space-between; margin-top: 16px;">
+            <button style="
+              flex: 1;
+              background-color: #3B82F6;
+              color: white;
+              border: none;
+              padding: 8px 12px;
+              margin-right: 4px;
+              border-radius: 8px;
+              cursor: pointer;">
+              Learned
+            </button>
+            <button style="
+              flex: 1;
+              background-color: #10B981;
+              color: white;
+              border: none;
+              padding: 8px 12px;
+              border-radius: 8px;
+              cursor: pointer;">
+              Learn
+            </button>
+          </div>
+        </div>
+      `;
+  };
 
   // Metni kelimelere bölüp tooltip ekleyen fonksiyon
   const renderTextWithTooltips = (text) => {
@@ -41,9 +104,9 @@ const LanguageDevelopment = () => {
       <span
         key={index}
         data-tooltip-id="tooltip"
-        data-tooltip-delay-hide={1000}
-        data-tooltip-content={word} // Tooltip içeriği
-        className="cursor-pointer mx-1 relative"
+        data-tooltip-html={getTooltipContent(word)} // Dinamik içerik
+        openOnClick // Tooltip'i tıklama ile aç
+        className="cursor-pointer text-blue-500 underline mx-1"
       >
         {word}
       </span>
@@ -94,12 +157,15 @@ const LanguageDevelopment = () => {
           id="tooltip"
           place="top"
           effect="solid"
+          openOnClick
           className="text-lg bg-white text-gray-800 p-4 rounded-lg shadow-lg z-10 absolute"
           style={{
-            width: "500px",
-            height: "500px", // Adjust the width of the tooltip card
-            position: "absolute",
-            border: "1px solid #e2e2e2", // Optional: Add a subtle border
+            backgroundColor: "#1E293B",
+            color: "#F8FAFC",
+            borderRadius: "12px",
+            padding: "16px",
+            boxShadow: "0 4px 12px rgba(0, 0, 0, 0.15)",
+            zIndex: 10,
           }}
         />
       </div>
