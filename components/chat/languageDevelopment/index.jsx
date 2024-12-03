@@ -1,90 +1,39 @@
 "use client";
-
 import dynamic from "next/dynamic";
-import { useDashboardStore } from "@/utils/dasboardStore";
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import Image from "next/image";
 import { Tooltip } from "react-tooltip";
 import "react-tooltip/dist/react-tooltip.css";
 import TextToSpeech from "@/globalElements/TextToSpeech";
+import useChatStore from "@/zustand/chatStore";
 
 const AudioRecorder = dynamic(() => import("@/globalElements/AudioRecorder"), {
   ssr: false,
 });
 
 const LanguageDevelopment = () => {
-  const {
-    feedback,
-    setFeedback,
-    toggleRefresh,
-    asistantAudioUrl,
-    setAsistantAudioUrl,
-    transcribedText,
-    setTranscribedText,
-  } = useDashboardStore((state) => state);
+  const { aiText, userText, aiAudioUrl } = useChatStore((state) => state);
+  const getAiResponse = useChatStore((state) => state.getAiResponse);
 
   const handleRecordingComplete = async (blob) => {
     try {
       if (!blob) {
         throw new Error("Ses kaydı alınamadı");
       }
-
       const formData = new FormData();
       formData.append("audio", blob, "audio.wav");
-      const audioResponse = await fetch("/api/process-audio/create", {
-        method: "POST",
-        body: formData,
-      });
-
-      if (!audioResponse.ok)
-        throw new Error(
-          (await audioResponse.json()).error || "Ses işleme hatası"
-        );
-
-      const { transcribedText } = await audioResponse.json();
-      setTranscribedText(transcribedText);
-
-      const textRes = await fetch("/api/process-text/create", {
-        method: "POST",
-        body: JSON.stringify({ text: transcribedText }),
-      });
-
-      if (!textRes.ok)
-        throw new Error(
-          (await textRes.json()).message || "Metin işleme hatası"
-        );
-
-      const { assistantMessage } = await textRes.json();
-      setFeedback(assistantMessage);
-
-      const ttsRes = await fetch("/api/text-to-speech/create", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ text: assistantMessage }),
-      });
-
-      if (!ttsRes.ok)
-        throw new Error(
-          (await ttsRes.json()).message || "Ses dönüştürme hatası"
-        );
-
-      setAsistantAudioUrl(URL.createObjectURL(await ttsRes.blob()));
-      toggleRefresh();
+      await getAiResponse(formData);
     } catch (error) {
-      console.error("İşlem hatası:", error);
-      setFeedback(error.message || "Beklenmeyen bir hata oluştu");
-      setAsistantAudioUrl(null);
-      setTranscribedText("");
+      console.error(error);
     }
   };
-
   useEffect(() => {
-    if (asistantAudioUrl) {
-      const audio = new Audio(asistantAudioUrl);
+    if (aiAudioUrl) {
+      const audio = new Audio(aiAudioUrl);
       audio.play();
       return () => audio.pause();
     }
-  }, [asistantAudioUrl]);
+  }, [aiAudioUrl]);
 
   // Metni kelimelere bölüp tooltip ekleyen fonksiyon
   const renderTextWithTooltips = (text) => {
@@ -103,29 +52,29 @@ const LanguageDevelopment = () => {
 
   return (
     <>
-      <div className="flex flex-col-reverse gap-3 lg:flex-row  w-full mt-[80px]">
-        <div className="bg-[#F4F4F4] h-full dark:bg-gray-800 rounded-lg shadow-lg p-8 w-full flex-grow-0 flex-shrink-0 basis-[60%] transition duration-200">
-          {transcribedText && (
+      <div className="flex  flex-col-reverse gap-3 lg:flex-row  w-full">
+        <div className="bg-[#F4F4F4] h-full dark:bg-gray-800 rounded-lg shadow-lg p-8 w-full flex-grow-0 flex-shrink-0 basis-[70%] transition duration-200">
+          {userText && (
             <div className="mt-8 flex flex-col gap-y-2">
               <h2 className="text-xl sm:text-2xl font-semibold text-gray-800 dark:text-gray-200 mb-4">
                 Senin Metnin:
               </h2>
-              <p className="text-gray-700 dark:text-gray-300 flex flex-wrap whitespace-pre-wrap">
-                {renderTextWithTooltips(transcribedText)}
+              <p className="text-gray-700 dark:text-gray-300 whitespace-pre-wrap">
+                {renderTextWithTooltips(userText)}
               </p>
-              <TextToSpeech text={transcribedText} />
+              <TextToSpeech text={userText} />
             </div>
           )}
 
-          {feedback && (
+          {aiText && (
             <div className="mt-8 flex flex-col gap-y-2">
               <h2 className="text-xl sm:text-2xl font-semibold text-gray-800 dark:text-gray-200 mb-4">
                 Geri Bildirim:
               </h2>
-              <p className="text-gray-700 dark:text-gray-300 flex flex-wrap whitespace-pre-wrap">
-                {renderTextWithTooltips(feedback)}
+              <p className="text-gray-700 dark:text-gray-300 whitespace-pre-wrap">
+                {renderTextWithTooltips(aiText)}
               </p>
-              <TextToSpeech text={feedback} />
+              <TextToSpeech text={aiText} />
             </div>
           )}
         </div>
