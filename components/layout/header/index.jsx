@@ -5,11 +5,13 @@ import Link from "next/link";
 import NextButton from "@/globalElements/Button";
 import { IoSettings } from "react-icons/io5";
 import React, { useRef, useState } from "react";
+import { usePathname } from "next/navigation";
 
 export default function Header() {
-  const { status, data } = useSession();
   const [open, setOpen] = useState(false);
+  const { status, data } = useSession();
   const openRef = useRef();
+  const pathname = usePathname();
 
   const handleClickOutside = React.useCallback((event) => {
     if (openRef.current && !openRef.current.contains(event.target)) {
@@ -31,24 +33,31 @@ export default function Header() {
           <Link href="/">SpeakBuddy</Link>
         </h1>
         <div className="flex items-center space-x-4">
+          {/* Yanlış link grubunu göstermemesi için Auth state'i bekler */}
           {status === "loading" ? (
             <div></div>
           ) : status === "authenticated" ? (
             <div className="flex items-center space-x-4">
-              <Link href="/chat-history">
-                <NextButton className="text-sm sm:text-base bg-indigo-500 hover:bg-indigo-600 text-white py-2 px-4 rounded-lg transition duration-150 ease-in-out">
-                  Chat History
-                </NextButton>
-              </Link>
+              {/* Pathname'e göre linki dinamik olarak değiştirir */}
+              {pathname === "/chat-history" ? (
+                <Link href="/chat">
+                  <NextButton className="text-sm sm:text-base bg-indigo-500 hover:bg-indigo-600 text-white py-2 px-4 rounded-lg transition duration-150 ease-in-out">
+                    Chat
+                  </NextButton>
+                </Link>
+              ) : (
+                <Link href="/chat-history">
+                  <NextButton className="text-sm sm:text-base bg-indigo-500 hover:bg-indigo-600 text-white py-2 px-4 rounded-lg transition duration-150 ease-in-out">
+                    Chat History
+                  </NextButton>
+                </Link>
+              )}
               <div className="relative flex items-center" ref={openRef}>
                 <button className="text-2xl" onClick={() => setOpen(!open)}>
                   <IoSettings />
                 </button>
                 {open && (
                   <div className="absolute mt-5 top-5 right-0 flex flex-col border transition-all bg-white max-w-fit rounded-md shadow-sm text-center">
-                    {/* <span className="text-black whitespace-nowrap text-base border-b border-solid border-blue-100 p-2 block">
-                      Hoş geldin <b>{data.user.name}</b>
-                    </span> */}
                     <Link
                       href={"/dashboard"}
                       className="text-black whitespace-nowrap text-base border-bp-2 hover:bg-red-50 transition-all duration-300 block w-full h-full p-3  border-b border-black/20"
