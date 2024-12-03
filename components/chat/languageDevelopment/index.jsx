@@ -103,14 +103,14 @@ const LanguageDevelopment = () => {
 
   return (
     <>
-      <div className="flex  flex-col-reverse gap-3 lg:flex-row  w-full mt-[80px]">
-        <div className="bg-[#F4F4F4] h-full dark:bg-gray-800 rounded-lg shadow-lg p-8 w-full flex-grow-0 flex-shrink-0 basis-[70%] transition duration-200">
+      <div className="flex flex-col-reverse gap-3 lg:flex-row  w-full mt-[80px]">
+        <div className="bg-[#F4F4F4] h-full dark:bg-gray-800 rounded-lg shadow-lg p-8 w-full flex-grow-0 flex-shrink-0 basis-[60%] transition duration-200">
           {transcribedText && (
             <div className="mt-8 flex flex-col gap-y-2">
               <h2 className="text-xl sm:text-2xl font-semibold text-gray-800 dark:text-gray-200 mb-4">
                 Senin Metnin:
               </h2>
-              <p className="text-gray-700 dark:text-gray-300 whitespace-pre-wrap">
+              <p className="text-gray-700 dark:text-gray-300 flex flex-wrap whitespace-pre-wrap">
                 {renderTextWithTooltips(transcribedText)}
               </p>
               <TextToSpeech text={transcribedText} />
@@ -122,7 +122,7 @@ const LanguageDevelopment = () => {
               <h2 className="text-xl sm:text-2xl font-semibold text-gray-800 dark:text-gray-200 mb-4">
                 Geri Bildirim:
               </h2>
-              <p className="text-gray-700 dark:text-gray-300 whitespace-pre-wrap">
+              <p className="text-gray-700 dark:text-gray-300 flex flex-wrap whitespace-pre-wrap">
                 {renderTextWithTooltips(feedback)}
               </p>
               <TextToSpeech text={feedback} />
@@ -133,10 +133,10 @@ const LanguageDevelopment = () => {
         <div className="flex-1">
           <div className="flex items-center flex-col gap-4">
             <Image
-              src="/images/person.jpeg"
+              src="/images/person.jpg"
               alt="person"
-              width={200}
-              height={200}
+              width={1920}
+              height={1080}
             />
             <AudioRecorder onRecordingComplete={handleRecordingComplete} />
           </div>
