@@ -2,7 +2,48 @@
 import Link from "next/link";
 import NextButton from "@/globalElements/Button";
 import Image from "next/image";
+import { useSession } from "next-auth/react";
+import { useState } from "react";
 export default function HomeDashboard() {
+  const { data: session, status } = useSession();
+  const [loading, setLoading] = useState(false);
+  
+  console.log("Session Data:", session);
+  console.log("Session Status:", status);
+
+  if (!status || status === "loading") {
+    return (
+      <div className="h-screen flex justify-center items-center bg-gray-900">
+        <p className="text-lg text-white animate-pulse">Loading...</p>
+      </div>
+    );
+  }
+
+  if (status === "authenticated") {
+    return (
+      <div className="h-screen flex flex-col justify-center items-center bg-gradient-to-r from-green-500 to-blue-500">
+        <h1 className="text-4xl font-bold text-white mb-8">Welcome to SpeakBuddy!</h1>
+        <div className="flex space-x-6">
+          <Link href="/games">
+            <NextButton className="bg-purple-600 hover:bg-purple-700 text-white py-3 px-8 rounded-lg text-lg transition duration-150 ease-in-out">
+              Games
+            </NextButton>
+          </Link>
+          <Link href="/speakbuddy">
+            <NextButton className="bg-blue-600 hover:bg-blue-700 text-white py-3 px-8 rounded-lg text-lg transition duration-150 ease-in-out">
+              SpeakBuddy
+            </NextButton>
+          </Link>
+          <Link href="/learn">
+            <NextButton className="bg-green-600 hover:bg-green-700 text-white py-3 px-8 rounded-lg text-lg transition duration-150 ease-in-out">
+              Learn
+            </NextButton>
+          </Link>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-r from-violet-900 to-violet-600 flex flex-col sm:flex-row justify-center items-center">
       <div className="container flex flex-wrap items-center justify-between">
@@ -10,16 +51,15 @@ export default function HomeDashboard() {
         <div className="w-full sm:w-1/2 px-4 mb-8 sm:mb-0">
           <h1 className="text-4xl font-extrabold text-gray-100 mb-4">
             Best Kids Online Learning Platform , SpeakBuddy! 🎙️
-
           </h1>
           <p className="text-lg text-gray-300 mb-6">
-          We offer a conversational interactive experience to enhance children's imagination and learning!
-
+            We offer a conversational interactive experience to enhance
+            children's imagination and learning!
           </p>
           <div className="flex space-x-4">
             <Link href="/login">
               <NextButton className="bg-indigo-500 hover:bg-indigo-600 text-white py-2 px-6 rounded-lg text-sm sm:text-base transition duration-150 ease-in-out">
-               Sign In
+                Sign In
               </NextButton>
             </Link>
             <Link href="/register">
