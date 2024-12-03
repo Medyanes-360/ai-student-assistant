@@ -25,7 +25,7 @@ export default function Header() {
   }, [handleClickOutside]);
 
   return (
-    <header className="border-b min-h-[80px] flex items-center  p-4 bg-gray-800 text-white dark:bg-gray-900 dark:text-gray-100">
+    <header className="border-b min-h-[80px] flex items-center  p-4 bg-gray-800 text-white dark:bg-gray-900 dark:text-gray-100 fixed w-full z-50">
       <div className="container mx-auto flex justify-between items-center ">
         <h1 className="text-xl font-bold hover:text-indigo-400 transition-colors duration-200">
           <Link href="/">SpeakBuddy</Link>
@@ -69,12 +69,12 @@ export default function Header() {
             <div className="flex items-center space-x-4">
               <Link href="/login">
                 <NextButton className="text-sm sm:text-base bg-indigo-500 hover:bg-indigo-600 text-white py-2 px-4 rounded-lg transition duration-150 ease-in-out">
-                  Giriş Yap
+                  Sign In{" "}
                 </NextButton>
               </Link>
               <Link href="/register">
                 <NextButton className="text-sm sm:text-base bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded-lg transition duration-150 ease-in-out">
-                  Kayıt Ol
+                  Sign Up{" "}
                 </NextButton>
               </Link>
             </div>

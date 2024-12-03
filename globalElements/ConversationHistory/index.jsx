@@ -55,7 +55,11 @@ const ConversationHistory = () => {
     return <p className="text-red-500">{error}</p>;
   }
   if (loading) {
-    return <p className="text-red-black">loading....</p>;
+    return (
+      <div className="h-screen flex justify-center items-center">
+        <p className="text-red-black">loading...</p>
+      </div>
+    );
   }
   const handleTextSelection = async () => {
     const selection = window.getSelection().toString();
@@ -68,12 +72,12 @@ const ConversationHistory = () => {
   console.log("selectedText", selectedText);
   return (
     <div className="flex flex-col flex-1">
-      <h2 className="text-2xl py-2 bg-black  px-6 flex items-center justify-center gap-2 font-semibold text-gray-200 dark:text-gray-100 mb-4">
+      <h2 className="text-2xl py-2 bg-black  px-6 flex items-center justify-center gap-2 font-semibold text-gray-200 dark:text-gray-100 mb-4 mt-[80px]">
         <RiChatHistoryLine />
         Conversation History
       </h2>
       {conversations.length === 0 && (
-        <p className="text-gray-600 dark:text-gray-400 mb-4 text-center">
+        <p className="text-gray-600 dark:text-gray-400 mb-4 text-center ">
           Henüz bir konuşma yok.
         </p>
       )}
