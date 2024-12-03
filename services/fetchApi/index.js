@@ -26,7 +26,7 @@ const postAPI = async (
       const errorData = await response.json().catch(() => null); // JSON yanıt olmayabilir
       throw new Error(
         errorData?.error ||
-        `HTTP Hatası: ${response.status} - ${response.statusText}`
+          `HTTP Hatası: ${response.status} - ${response.statusText}`
       );
     }
 

@@ -1,3 +1,4 @@
+import { textToSpeechAPI } from "@/services/gptOperations";
 import OpenAI from "openai";
 
 const openai = new OpenAI({
@@ -12,31 +13,8 @@ export default async function handler(req, res) {
   }
   try {
     const { text } = req.body;
-    if (!text) {
-      return res.status(400).json({
-        status: "error",
-        message: "Metin alınamadı.",
-      });
-    }
+    const audioArrayBuffer = await textToSpeechAPI(text);
 
-    const voiceFile = openai.audio.speech.create({
-      model: "tts-1",
-      voice: "alloy",
-      input: text,
-    });
-
-    if (!voiceFile) {
-      return res
-        .status(400)
-        .json({ status: "error", message: "TTS API Hatası" });
-    }
-
-    const audioArrayBuffer = await (await voiceFile).arrayBuffer();
-    if (!audioArrayBuffer) {
-      return res
-        .status(403)
-        .json({ status: "error", message: "Audi Array Bufer is not defined" });
-    }
     res.setHeader("Content-Type", "audio/mp3");
     return res.send(Buffer.from(audioArrayBuffer));
   } catch (error) {
