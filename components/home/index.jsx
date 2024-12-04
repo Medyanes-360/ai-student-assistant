@@ -4,10 +4,10 @@ import NextButton from "@/globalElements/Button";
 import Image from "next/image";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
-export default function HomeDashboard() {
+export default function HomePage() {
   const { data: session, status } = useSession();
   const [loading, setLoading] = useState(false);
-  
+
   console.log("Session Data:", session);
   console.log("Session Status:", status);
 
@@ -22,7 +22,9 @@ export default function HomeDashboard() {
   if (status === "authenticated") {
     return (
       <div className="h-screen flex flex-col justify-center items-center bg-gradient-to-r from-violet-900 to-violet-600">
-        <h1 className="text-4xl font-bold text-white mb-8">Welcome to SpeakBuddy!</h1>
+        <h1 className="text-4xl font-bold text-white mb-8">
+          Welcome to SpeakBuddy!
+        </h1>
         <div className="flex space-x-6">
           <Link href="/games">
             <NextButton className="bg-purple-600 hover:bg-purple-700 text-white py-3 px-8 rounded-lg text-lg transition duration-150 ease-in-out">

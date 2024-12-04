@@ -1,5 +1,9 @@
-import { Chat } from "@/components/chat";
+import LanguageDevelopment from "@/components/chat/languageDevelopment";
 
 export default function ChatContainer() {
-  return <Chat />;
+  return (
+    <div className="container mx-auto py-10">
+      <LanguageDevelopment />
+    </div>
+  );
 }

@@ -1,5 +1,5 @@
-import HomeDashboard from "@/components/home";
+import HomePage from "@/components/home";
 
 export default function HomePageContainer() {
-  return <HomeDashboard />;
+  return <HomePage />;
 }
