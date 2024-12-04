@@ -20,7 +20,6 @@ const ConversationHistory = () => {
   useEffect(() => {
     if (conversations.length === 0) {
       getConversations();
-      setIsInitialLoad(false);
     }
   }, []);
 
@@ -29,8 +28,8 @@ const ConversationHistory = () => {
       const element = containerRef.current;
       console.log("conversations.length:", conversations.length);
       element.scrollTop = element.scrollHeight;
+      setIsInitialLoad(false);
     }
-    console.log(conversations);
   }, [conversations]);
 
   const handleScrollTop = () => {
@@ -58,13 +57,7 @@ const ConversationHistory = () => {
       </div>
     );
   }
-  // initial={isInitialLoad ? { opacity: 1 } : { opacity: 0 }}
-  // animate={{ opacity: 1 }}
-  // transition={
-  //   isInitialLoad
-  //     ? false
-  //     : { delay: 0.09 * (conversations.length - index) }
-  // }
+
   return (
     <div className="flex flex-col  bg-black/10 shadow-inner h-screen mt-[80px] overflow-y-hidden">
       {conversations.length === 0 && (
@@ -85,7 +78,11 @@ const ConversationHistory = () => {
               <MotionDiv
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                transition={{ delay: 0.09 * (conversations.length - index) }}
+                transition={
+                  isInitialLoad
+                    ? { delay: 0.09 * (conversations.length - index) }
+                    : { delay: 0 }
+                }
                 onMouseUp={handleTextSelection}
                 key={conv.createdAt}
                 className="flex flex-col space-y-2 max-h-[700px]"
