@@ -1,6 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import NextButton from "@/globalElements/Button";
+import { postAPI } from "@/services/fetchApi";
 import registerImage from "@/public/images/auth.webp";
 import Image from "next/image";
 import Input from "@/globalElements/Input";
@@ -43,8 +44,7 @@ export default function Register() {
 
     try {
       const { name, email, password } = fields;
-      const res = await fetch("/auth/register", {
-        method: "POST",
+      const res = await postAPI("/auth/register", {
         body: fields,
       });
 
