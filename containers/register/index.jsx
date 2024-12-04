@@ -44,9 +44,7 @@ export default function Register() {
 
     try {
       const { name, email, password } = fields;
-      const res = await postAPI("/auth/register", {
-        body: fields,
-      });
+      const res = await postAPI("/auth/register", fields);
 
       if (!res.ok) {
         const errorText = await res?.message;

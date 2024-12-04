@@ -1,44 +1,74 @@
+export const dynamic = "force-dynamic";
+
 // Öğrenci (kayıt) işlemleri için kullanılan servis
 const postAPI = async (
   URL,
-  { body = null, method = "POST", headers = {} } = {}
+  body,
+  method = "POST",
+  headers = { "Content-Type": "application/json" }
 ) => {
   try {
-    // Base API URL kontrolü
-    const baseURL = process.env.NEXT_PUBLIC_API_URL;
-    if (!baseURL || !URL) {
-      throw new Error("API URL yapılandırması eksik!");
+    if (!process.env.NEXT_PUBLIC_API_URL || !URL) {
+      throw new Error("URL bulunamadı!");
     }
+    const data = await fetch(`${process.env.NEXT_PUBLIC_API_URL + URL}`, {
+      method: method,
+      headers: headers,
+      body: JSON.stringify(body),
+      cache: "no-store",
+      // cache önemli! her çalıştığında cache'deki veri yerine -> güncel veriyi almasını sağlar.
+      // bu olmaz ise üncel veriyi almayabiliyor dikkat et.
+      // Dinamik sayfalarda burası kullanılıyorsa o sayfalara -> export const dynamic = 'force-dynamic' ekle!
+    })
+      .then((res) => {
+        if (res.url.includes("/notification") && res.redirected) {
+          return (window.location.href = res.url);
+        } else {
+          return res.json();
+        }
+      })
+      .catch((err) => console.error(err));
 
-    // Fetch isteği
-    const response = await fetch(`${baseURL}${URL}`, {
-      method,
-      headers: {
-        "Content-Type": "application/json", // Varsayılan başlık
-        ...headers, // Kullanıcı başlıkları
-      },
-      body: body ? JSON.stringify(body) : null,
-      cache: "no-store", // Güncel veri almak için
-    });
-
-    // Yanıt kontrolü
-    if (!response.ok) {
-      const errorData = await response.json().catch(() => null); // JSON yanıt olmayabilir
-      throw new Error(
-        errorData?.error ||
-          `HTTP Hatası: ${response.status} - ${response.statusText}`
-      );
-    }
-
-    // Yanıt JSON olarak dönüyor
-    return await response.json();
+    return data;
   } catch (err) {
-    console.error("API Hatası:", err.message);
-    throw new Error(`API isteği başarısız: ${err.message}`);
+    throw new Error(`API request failed: ${err}`);
   }
 };
+// Öğrenci (kayıt) işlemleri için kullanılan servis
+const putAPI = async (
+  URL,
+  body,
+  method = "PUT",
+  headers = { "Content-Type": "application/json" }
+) => {
+  try {
+    if (!process.env.NEXT_PUBLIC_API_URL || !URL) {
+      throw new Error("URL bulunamadı!");
+    }
 
-export default postAPI;
+    const data = await fetch(`${process.env.NEXT_PUBLIC_API_URL + URL}`, {
+      method: method,
+      headers: headers,
+      body: JSON.stringify(body),
+      cache: "no-store",
+
+      // cache önemli! her çalıştığında cache'deki veri yerine -> güncel veriyi almasını sağlar.
+      // bu olmaz ise üncel veriyi almayabiliyor dikkat et.
+      // Dinamik sayfalarda burası kullanılıyorsa o sayfalara -> export const dynamic = 'force-dynamic' ekle!
+    })
+      .then((res) => {
+        if (res.url.includes("/notification") && res.redirected) {
+          return (window.location.href = res.url);
+        } else {
+          return res.json();
+        }
+      })
+      .catch((err) => console.error(err));
+    return data;
+  } catch (err) {
+    throw new Error(`API request failed: ${err}`);
+  }
+};
 
 // Öğrenci (kayıt) işlemleri için kullanılan servis
 const getAPI = async (
@@ -59,8 +89,27 @@ const getAPI = async (
       }
     })
     .catch((err) => console.error(err));
-
+  return data;
+};
+const deleteAPI = async (
+  URL,
+  headers = { "Content-Type": "application/json" }
+) => {
+  const data = await fetch(`${process.env.NEXT_PUBLIC_API_URL + URL}`, {
+    method: "DELETE",
+    headers: headers,
+    cache: "no-store",
+  })
+    .then((res) => {
+      if (res.redirected) {
+        // bazı yerlerde window'u bulamıyor kontrol et
+        //return window.location.href = res.url;
+      } else {
+        return res.json();
+      }
+    })
+    .catch((err) => console.error(err));
   return data;
 };
 
-export { postAPI, getAPI };
+export { postAPI, getAPI, deleteAPI, putAPI };
