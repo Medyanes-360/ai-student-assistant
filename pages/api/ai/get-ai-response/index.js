@@ -26,9 +26,37 @@ export default async function handler(req, res) {
     // gelen sesi texte dönüştür:
     const transcribedText = await speechToTextWhisperAPI(req);
 
-    // dönüştürülen sesi gpt4o'ya gönder ve  text yanıtı al:
-    const aiResponse = await GPT4oAPI(transcribedText);
+    // son 5 sohbeti çek:
 
+    const conversationHistory = await prisma["conversation"].findMany({
+      take: 5,
+
+      where: {
+        userId: session.user.id,
+      },
+      orderBy: {
+        createdAt: "asc",
+      },
+    });
+
+    const chatHistory = [];
+    conversationHistory.forEach((conversation) => {
+      chatHistory.push({
+        role: "user",
+        content: conversation.userInput,
+      });
+      chatHistory.push({
+        role: "assistant",
+        content: conversation.assistantResponse,
+      });
+    });
+    const conversationToPost4o = [
+      ...chatHistory,
+      { role: "user", content: transcribedText },
+    ];
+    // dönüştürülen sesi ve son 10 mesajı gpt4o'ya gönder ve  text yanıtı al:
+    const aiResponse = await GPT4oAPI(conversationToPost4o);
+    console.log(conversationToPost4o);
     // ai ın  cevap textini sese dönüştür:
 
     // AI'ın cevap textini sese dönüştür

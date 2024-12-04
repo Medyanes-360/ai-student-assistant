@@ -12,7 +12,7 @@ const useConversationStore = create((set, get) => ({
     }));
 
     const skip = get().conversations.length; // kaç tane conversationu geçecek?
-    const take = 20; // çekilecek miktar
+    const take = 10; // çekilecek miktar, 10 conversation = toplam 20 mesaj (10 speakbuddy 10 kullanıcı)
     console.log("inside getconversations");
     const res = await fetch(
       `/api/conversation/get-conversations?skip=${skip}&take=${take}`
