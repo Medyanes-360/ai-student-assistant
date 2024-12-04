@@ -21,7 +21,7 @@ export default function HomeDashboard() {
 
   if (status === "authenticated") {
     return (
-      <div className="h-screen flex flex-col justify-center items-center bg-gradient-to-r from-green-500 to-blue-500">
+      <div className="h-screen flex flex-col justify-center items-center bg-gradient-to-r from-violet-900 to-violet-600">
         <h1 className="text-4xl font-bold text-white mb-8">Welcome to SpeakBuddy!</h1>
         <div className="flex space-x-6">
           <Link href="/games">
@@ -29,7 +29,7 @@ export default function HomeDashboard() {
               Games
             </NextButton>
           </Link>
-          <Link href="/speakbuddy">
+          <Link href="/chat">
             <NextButton className="bg-blue-600 hover:bg-blue-700 text-white py-3 px-8 rounded-lg text-lg transition duration-150 ease-in-out">
               SpeakBuddy
             </NextButton>
