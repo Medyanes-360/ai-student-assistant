@@ -1,20 +1,17 @@
 "use client";
-import dynamic from "next/dynamic";
 import { useEffect } from "react";
 import Image from "next/image";
 import { Tooltip } from "react-tooltip";
 import "react-tooltip/dist/react-tooltip.css";
 import TextToSpeech from "@/globalElements/TextToSpeech";
 import useChatStore from "@/zustand/chatStore";
-
-const AudioRecorder = dynamic(() => import("@/globalElements/AudioRecorder"), {
-  ssr: false,
-});
+import AudioRecorder from "@/globalElements/AudioRecorder";
+import useConversationStore from "@/zustand/conversationStore";
 
 const LanguageDevelopment = () => {
   const { aiText, userText, aiAudioUrl } = useChatStore((state) => state);
   const getAiResponse = useChatStore((state) => state.getAiResponse);
-
+  const conversations = useConversationStore((state) => state.conversations);
   const handleRecordingComplete = async (blob) => {
     try {
       if (!blob) {
@@ -38,7 +35,7 @@ const LanguageDevelopment = () => {
   //word data : you kelimesine tıklayınca örneği görebilirsiniz.
   const wordData = {
     you: {
-      pronunciation: "yuː",
+      pronunciation: "youː",
       translations: ["Sen", "Siz"],
       examples: ["How are you?", "I see you."],
     },
@@ -105,7 +102,7 @@ const LanguageDevelopment = () => {
         key={index}
         data-tooltip-id="tooltip"
         data-tooltip-html={getTooltipContent(word)} // Dinamik içerik
-        openOnClick // Tooltip'i tıklama ile aç
+        // Tooltip'i tıklama ile aç
         className="cursor-pointer text-blue-500 underline mx-1"
       >
         {word}

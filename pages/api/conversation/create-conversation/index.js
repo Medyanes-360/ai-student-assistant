@@ -1,9 +1,9 @@
 import { authOptions } from "@/lib/authOptions";
-import { getDataByUniqueMany } from "@/services/servicesOperations";
+import prisma from "@/lib/prisma";
 import { getServerSession } from "next-auth";
 
 export default async function handler(req, res) {
-  if (req.method !== "GET") {
+  if (req.method !== "POST") {
     return res
       .status(405)
       .json({ status: "error", message: "Method not allowed" });
@@ -16,17 +16,25 @@ export default async function handler(req, res) {
   }
 
   try {
-    const conversations = await getDataByUniqueMany(
-      "conversation",
-      { userId: session.user.id },
-      { createdAt: "asc" }
-    );
-    if (!conversations) {
-      return res
-        .status(403)
-        .json({ status: "error", message: "Conversation is null" });
-    }
-    return res.status(201).json(conversations);
+    const { userText, aiText } = req.body;
+
+    const conversation = await prisma["conversation"].create({
+      data: {
+        user: {
+          connect: {
+            id: session.user.id,
+          },
+        },
+        userInput: userText,
+        assistantResponse: aiText,
+      },
+    });
+
+    return res.status(200).json({
+      success: true,
+      message: "Conversation ekleme işlemi başarılı.",
+      conversation: conversation,
+    });
   } catch (error) {
     return res
       .status(500)

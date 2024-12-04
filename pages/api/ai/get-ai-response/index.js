@@ -6,7 +6,6 @@ import {
   speechToTextWhisperAPI,
   textToSpeechAPI,
 } from "@/services/gptOperations";
-import { createNewData } from "@/services/servicesOperations";
 import { getServerSession } from "next-auth";
 
 export default async function handler(req, res) {
@@ -29,13 +28,6 @@ export default async function handler(req, res) {
 
     // dönüştürülen sesi gpt4o'ya gönder ve  text yanıtı al:
     const aiResponse = await GPT4oAPI(transcribedText);
-
-    //db'ye sohbeti ekle
-    await createNewData("conversation", {
-      userId: session.user.id,
-      userInput: transcribedText,
-      assistantResponse: aiResponse,
-    });
 
     // ai ın  cevap textini sese dönüştür:
 
