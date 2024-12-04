@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import useConversationStore from "./conversationStore";
 
 const useChatStore = create((set, get) => ({
   loading: false,
@@ -7,11 +8,25 @@ const useChatStore = create((set, get) => ({
   aiText: "",
   userText: "",
 
-  getAiResponse: async (formData) => {
+  getAiResponse: async (blob) => {
     set((state) => ({
       ...state,
       loading: true,
     }));
+
+    const formData = new FormData();
+    // formData'ya audio blob'unu yükle:
+    formData.append("audio", blob, "audio.wav");
+
+    //son 10 conversation'u yükle:
+    const lastTenConversation = useConversationStore
+      .getState()
+      .conversations.sort(
+        (a, b) => new Date(a.createdAt) - new Date(b.createdAt)
+      )
+      .slice(0, 10);
+
+    formData.append("conversations", JSON.stringify(lastTenConversation));
 
     const aiResponse = await fetch("/api/ai/get-ai-response", {
       method: "POST",

@@ -1,6 +1,5 @@
 import { authOptions } from "@/lib/authOptions";
 import { GPT4oAPI } from "@/services/gptOperations";
-import { createNewData } from "@/services/servicesOperations";
 import { getServerSession } from "next-auth";
 import OpenAI from "openai";
 
@@ -30,11 +29,6 @@ export default async function handler(req, res) {
 
     const assistantMessage = await GPT4oAPI(text);
 
-    await createNewData("conversation", {
-      userId: session.user.id,
-      userInput: text,
-      assistantResponse: assistantMessage,
-    });
     return res
       .status(201)
       .json({ status: "success", assistantMessage: assistantMessage });

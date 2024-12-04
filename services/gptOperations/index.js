@@ -1,41 +1,7 @@
 import openai from "@/lib/openai";
 import fs from "fs";
-import formidable from "formidable";
 
-import path from "path";
-
-export const speechToTextWhisperAPI = async (req) => {
-  // upload edilen sesi geçici olarak depoluyoruz:
-  const uploadDir = path.join("/tmp", "uploads");
-  try {
-    if (!fs.existsSync(uploadDir)) {
-      fs.mkdirSync(uploadDir, { recursive: true });
-    }
-  } catch (err) {
-    throw new Error("Server configuration error :" + (err.message || ""));
-  }
-
-  // Configure formidable
-  const form = formidable({
-    uploadDir,
-    keepExtensions: true,
-    maxFileSize: 10 * 1024 * 1024, // 10MB limit
-  });
-
-  //formidable ile gönderilen veriyi alıyoruz
-  const [fields, files] = await new Promise((resolve, reject) => {
-    form.parse(req, (err, fields, files) => {
-      if (err) reject(err);
-      resolve([fields, files]);
-    });
-  });
-
-  // Ses dosyasının var olup olmadığını kontrol ediyoruz
-  const audioFile = files.audio?.[0] || files.audio; // Handle both formidable v3 and v4
-
-  if (!audioFile) {
-    throw new Error("Ses Yüklenirken bir hata oluştu. Lütfen Tekrar Deneyin.");
-  }
+export const speechToTextWhisperAPI = async (audioFile) => {
   // Ses dosyasını gpt'ye gönderilebilir hale getiriyoruz
   const audioData = fs.createReadStream(audioFile.filepath);
 
@@ -64,18 +30,33 @@ export const speechToTextWhisperAPI = async (req) => {
   return transcription.text;
 };
 
-export const GPT4oAPI = async (text) => {
-  if (!text || text.trim() == "") {
+export const GPT4oAPI = async (conversationHistory, lastUserMessage) => {
+  if (!lastUserMessage || lastUserMessage.trim() == "") {
     throw new Error("Metin Algılanamadı.");
   }
+  // chat history'yi gpt'ye gönderilebilecek şekilde uygun forma getiriyoruz:
+  const chatHistory = [];
+  conversationHistory.forEach((conversation) => {
+    chatHistory.unshift({
+      role: "assistant",
+      content: conversation.assistantResponse,
+    });
+    chatHistory.unshift({
+      role: "user",
+      content: conversation.userInput,
+    });
+  });
 
-  const completion = await openai.chat.completions.create({
-    model: "ft:gpt-4o-2024-08-06:personal::AaXK73ve",
-    audio: { voice: "alloy", format: "wav" },
-    messages: [
-      {
-        role: "system",
-        content: `If they ask you to do something else, give this answer: ‘I am an artificial intelligence trained only to teach English.’ Your main goal is to speak English with the student. If I ask you to write a code, say that you can't do that and that you are trained to teach English. You are a kind, supportive, and encouraging language assistant designed to help preschool children develop their English language skills. You understand input in both Turkish and English and always reply in English. Your goal is to understand their speech and provide appropriate feedback in terms of grammar and pronunciation, making the learning process enjoyable and effective. The user who spoke to you has a low level of English.
+  const conversationToPost4o = [
+    ...chatHistory,
+    { role: "user", content: lastUserMessage },
+  ];
+
+  const messages = [
+    // ilk mesajımız sistem mesajı, bu mesajda kuralları belirtiyoruz:
+    {
+      role: "system",
+      content: `If they ask you to do something else, give this answer: ‘I am an artificial intelligence trained only to teach English.’ Your main goal is to speak English with the student. If I ask you to write a code, say that you can't do that and that you are trained to teach English. You are a kind, supportive, and encouraging language assistant designed to help preschool children develop their English language skills. You understand input in both Turkish and English and always reply in English. Your goal is to understand their speech and provide appropriate feedback in terms of grammar and pronunciation, making the learning process enjoyable and effective. The user who spoke to you has a low level of English.
 **Communication Guidelines:**
 - **Input Languages:** Turkish and English
 - **Response Language:** English
@@ -83,15 +64,20 @@ export const GPT4oAPI = async (text) => {
 - **Language Level:** Use simple and understandable words appropriate for preschool children
 - **Sentence Structure:** Short and clear sentences; avoid complex structures and advanced vocabulary
 - **Pacing:** Provide information in small, easy-to-follow segments to simulate slower communication
+- **Communication:** Try to continue the conversation by looking older chat messages **
 **Remember to start with praise, gently correct mistakes by modeling the correct expression, and end with encouraging words. speak more slowly and use slower sentences.**
 **You are a conversational assistant. Maintain context and respond naturally to the user.**
 `,
-      },
-      {
-        role: "user",
-        content: text,
-      },
-    ],
+    },
+    // son 10 mesaj + gönderilen son cevabı ekliyoruz:
+    ...conversationToPost4o,
+  ];
+
+  const completion = await openai.chat.completions.create({
+    model: "ft:gpt-4o-2024-08-06:personal::AaXK73ve",
+    audio: { voice: "alloy", format: "wav" },
+    messages: messages,
+
     temperature: 0.7,
   });
 

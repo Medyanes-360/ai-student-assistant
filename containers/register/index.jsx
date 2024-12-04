@@ -10,6 +10,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import Loading from "@/components/loading";
+import { FaSpinner } from "react-icons/fa6";
 export default function Register() {
   const { status } = useSession();
   const router = useRouter();
@@ -43,9 +44,7 @@ export default function Register() {
 
     try {
       const { name, email, password } = fields;
-      const res = await postAPI("/auth/register", {
-        body: JSON.stringify(fields),
-      });
+      const res = await postAPI("/auth/register", fields);
 
       if (!res.ok) {
         const errorText = await res?.message;

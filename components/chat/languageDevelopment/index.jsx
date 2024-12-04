@@ -1,5 +1,5 @@
 "use client";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import Image from "next/image";
 import { Tooltip } from "react-tooltip";
 import "react-tooltip/dist/react-tooltip.css";
@@ -12,14 +12,16 @@ const LanguageDevelopment = () => {
   const { aiText, userText, aiAudioUrl } = useChatStore((state) => state);
   const getAiResponse = useChatStore((state) => state.getAiResponse);
   const conversations = useConversationStore((state) => state.conversations);
+  const getConversations = useConversationStore(
+    (state) => state.getConversations
+  );
   const handleRecordingComplete = async (blob) => {
     try {
       if (!blob) {
         throw new Error("Ses kaydı alınamadı");
       }
-      const formData = new FormData();
-      formData.append("audio", blob, "audio.wav");
-      await getAiResponse(formData);
+
+      await getAiResponse(blob);
     } catch (error) {
       console.error(error);
     }
@@ -51,6 +53,19 @@ const LanguageDevelopment = () => {
     },
   };
 
+  // START: -- BU BÖLÜM YALNIZCA İLK /CHAT'E GİRİLDİĞİNDE SON 10 MESAJI ÇEKMEK İÇİN VAR.
+  const isFetched = useRef(true);
+  useEffect(() => {
+    if (!conversations || conversations.length == 0) {
+      if (!isFetched.current) {
+        return;
+      }
+      isFetched.current = true;
+      getConversations();
+    }
+  }, []);
+  // END
+  console.log(conversations);
   // Tooltip içeriğini dinamik olarak oluşturma fonksiyonu
   const getTooltipContent = (word) => {
     const content = wordData[word.toLowerCase()];
