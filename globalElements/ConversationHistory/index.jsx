@@ -6,6 +6,10 @@ import { SiGoogletranslate } from "react-icons/si";
 import useConversationStore from "@/zustand/conversationStore";
 import { MotionDiv } from "../motion";
 
+//////////////////
+//Scroll davranışılarında kullanılan 10 sayısı, fetch fonksiyonunun db'den her seferinde 10 adet data getirmesinden kaynaklanır.
+/////////////////
+
 const ConversationHistory = () => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -24,15 +28,21 @@ const ConversationHistory = () => {
   }, []);
 
   useEffect(() => {
+    // conversation ilk fetchi tamamlandığında en aşağı scrollar.
     if (conversations.length === 10) {
-      const element = containerRef.current;
-      console.log("conversations.length:", conversations.length);
-      element.scrollTop = element.scrollHeight;
+      const container = containerRef.current;
+      container.scrollTop = container.scrollHeight;
       setIsInitialLoad(false);
+    }
+    // conversation tekrar fetch edildiğinde son kalınan mesaja instant olarak scrollar
+    if (conversations.length > 10) {
+      const element = document.getElementById(conversations.length - 9);
+      element.scrollIntoView({ behavior: "instant" });
     }
   }, [conversations]);
 
   const handleScrollTop = () => {
+    // en yukarıya scrollandıysa
     if (containerRef.current.scrollTop === 0) {
       getConversations();
     }
@@ -79,7 +89,8 @@ const ConversationHistory = () => {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={
-                  isInitialLoad
+                  // transition delay'in sadece sayfa ilk yüklendiğinde çalışması için. kullanıcı başka sayfadan geri geldiğinde de çalışmasını engeller.
+                  isInitialLoad && conversations.length <= 10
                     ? { delay: 0.09 * (conversations.length - index) }
                     : { delay: 0 }
                 }
@@ -89,6 +100,7 @@ const ConversationHistory = () => {
               >
                 {/* Kullanıcı Mesajı */}
                 <MotionDiv
+                  id={conversations.length - index}
                   initial={{ x: 10 }}
                   animate={{ x: 0 }}
                   transition={{ delay: 0.1 }}
