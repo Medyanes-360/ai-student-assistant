@@ -25,10 +25,9 @@ const ConversationHistory = () => {
   }, []);
 
   useEffect(() => {
-    if (conversations.length === 20) {
+    if (conversations.length === 10) {
       const element = containerRef.current;
       console.log("conversations.length:", conversations.length);
-
       element.scrollTop = element.scrollHeight;
     }
     console.log(conversations);
