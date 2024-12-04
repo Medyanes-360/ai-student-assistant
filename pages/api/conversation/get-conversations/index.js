@@ -29,7 +29,7 @@ export default async function handler(req, res) {
         userId: session.user.id,
       },
       orderBy: {
-        createdAt: "asc",
+        createdAt: "desc",
       },
     });
 

@@ -17,6 +17,7 @@
     "dotenv": "^16.4.5",
     "formidable": "^3.5.2",
     "mongodb": "^6.10.0",
+    "motion": "^11.13.1",
     "next": "^15.0.3",
     "next-auth": "^4.24.10",
     "openai": "^4.73.0",

@@ -9,13 +9,13 @@ import { usePathname } from "next/navigation";
 import useConversationStore from "@/zustand/conversationStore";
 
 export default function Header() {
-  const conversations = useConversationStore((state) => state.conversations);
-  const getConversations = useConversationStore(
-    (state) => state.getConversations
-  );
-  const createConversation = useConversationStore(
-    (state) => state.createConversation
-  );
+  // const conversations = useConversationStore((state) => state.conversations);
+  // const getConversations = useConversationStore(
+  //   (state) => state.getConversations
+  // );
+  // const createConversation = useConversationStore(
+  //   (state) => state.createConversation
+  // );
 
   const [open, setOpen] = useState(false);
   const { status, data } = useSession();
@@ -35,10 +35,10 @@ export default function Header() {
     };
   }, [handleClickOutside]);
 
-  const handleGetConversations = async () => {
-    await getConversations();
-  };
-  console.log(conversations);
+  // const handleGetConversations = async () => {
+  //   await getConversations();
+  // };
+  // console.log(conversations);
 
   return (
     <header className="border-b min-h-[80px] flex items-center  p-4 bg-gray-800 text-white dark:bg-gray-900 dark:text-gray-100 fixed w-full z-50">
@@ -46,7 +46,7 @@ export default function Header() {
         <h1 className="text-xl font-bold hover:text-indigo-400 transition-colors duration-200">
           <Link href="/">SpeakBuddy</Link>
         </h1>
-        <button onClick={handleGetConversations}>Click to fetch</button>
+        {/* <button onClick={handleGetConversations}>Click to fetch</button> */}
         <div className="flex items-center space-x-4">
           {/* Yanlış link grubunu göstermemesi için Auth state'i bekler */}
           {status === "loading" ? (
