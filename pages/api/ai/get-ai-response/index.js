@@ -6,6 +6,7 @@ import {
   speechToTextWhisperAPI,
   textToSpeechAPI,
 } from "@/services/gptOperations";
+import { createNewData } from "@/services/servicesOperations";
 import { getServerSession } from "next-auth";
 
 export default async function handler(req, res) {
@@ -49,6 +50,7 @@ export default async function handler(req, res) {
         role: "assistant",
         content: conversation.assistantResponse,
       });
+      console.log(conversation.createdAt);
     });
     const conversationToPost4o = [
       ...chatHistory,
@@ -59,6 +61,13 @@ export default async function handler(req, res) {
     console.log(conversationToPost4o);
     // ai ın  cevap textini sese dönüştür:
 
+    const conversation = await createNewData("conversation", {
+      userId: session.user.id,
+      userInput: transcribedText,
+      assistantResponse: aiResponse,
+    });
+
+    console.log(conversation);
     // AI'ın cevap textini sese dönüştür
     const audioArrayBuffer = await textToSpeechAPI(aiResponse);
 

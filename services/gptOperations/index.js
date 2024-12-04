@@ -81,10 +81,12 @@ export const GPT4oAPI = async (chatHistory) => {
 - **Language Level:** Use simple and understandable words appropriate for preschool children
 - **Sentence Structure:** Short and clear sentences; avoid complex structures and advanced vocabulary
 - **Pacing:** Provide information in small, easy-to-follow segments to simulate slower communication
+- **Communication:** Try to continue the conversation by looking older chat messages **
 **Remember to start with praise, gently correct mistakes by modeling the correct expression, and end with encouraging words. speak more slowly and use slower sentences.**
 **You are a conversational assistant. Maintain context and respond naturally to the user.**
 `,
     },
+    // son 10 mesaj + gönderilen son cevabı ekliyoruz:
     ...chatHistory,
   ];
 

@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { SiGoogleassistant } from "react-icons/si";
 import { RiChatHistoryLine } from "react-icons/ri";
 import { useDashboardStore } from "@/utils/dasboardStore";
