@@ -79,7 +79,7 @@ const ConversationHistory = () => {
         <div
           onScroll={handleScrollTop}
           ref={containerRef}
-          className="flex flex-col pt-4 h-full w-full px-4  overflow-y-scroll md:px-24 lg:px-32"
+          className="flex flex-col gap-4 pt-4 h-full w-full px-4  overflow-y-scroll md:px-24 lg:px-32"
         >
           {conversations
             ?.slice()
@@ -106,12 +106,14 @@ const ConversationHistory = () => {
                   transition={{ delay: 0.1 }}
                   onMouseUp={handleTextSelection}
                   key={index}
-                  className="self-end  max-w-[70%] bg-blue-500  rounded-tl-[40px] rounded-bl-[40px] rounded-br-[40px] text-black p-6 rounded-lg shadow-md"
+                  className="flex flex-col self-end  max-w-[70%] bg-[#662EC5]  rounded-tl-[40px] rounded-bl-[40px] rounded-br-[40px] text-black p-6 rounded-lg shadow-md"
                 >
                   <p className="text-base text-white">{conv.userInput}</p>
                   <p className="text-xs text-gray-200 mt-1">
                     {new Date(conv.createdAt).toLocaleString()}
                   </p>
+                  <SiGoogletranslate className="self-end  bottom-3 right-5 w-6 h-6 text-white cursor-pointer hover:text-blue-500" />
+
                 </MotionDiv>
 
                 <MotionDiv
@@ -119,10 +121,10 @@ const ConversationHistory = () => {
                   animate={{ x: 0 }}
                   transition={{ delay: 0.1 }}
                   onMouseUp={handleTextSelection}
-                  className="self-start max-w-[70%] relative bg-[#EEEEEE] dark:bg-gray-700 text-gray-800 dark:text-gray-200 p-6 rounded-tl-[40px] rounded-bt-[40px] rounded-br-[40px] rounded-tr-[40px] shadow-md"
+                  className="self-start max-w-[70%] relative bg-[#74B359] text-gray-800 dark:text-gray-200 p-6 rounded-tl-[40px] rounded-bt-[40px] rounded-br-[40px] rounded-tr-[40px] shadow-md "
                 >
                   <p className="text-base">{conv.assistantResponse}</p>
-                  <p className="text-xs mb-2 text-gray-500 dark:text-gray-400 mt-1">
+                  <p className="text-xs mb-2  text-white  mt-1">
                     {new Date(conv.createdAt).toLocaleString()}
                   </p>
                   <TextToSpeech text={conv.assistantResponse} />
