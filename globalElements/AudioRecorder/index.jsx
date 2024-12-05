@@ -151,13 +151,13 @@ export default function AudioRecorder({ onRecordingComplete }) {
       )}
 
       {userAudioUrl && (
-        <div className="mt-4 p-4  rounded-lg shadow-lg max-w-xs text-center">
+        <div className="mt-4 p-4 bg-white rounded-lg shadow-lg max-w-xs text-center">
           <p className="text-sm font-semibold">Ses kaydınız tamamlandı!</p>
         </div>
       )}
 
       {errorMessage && (
-        <div className="mt-4 text-red-600 font-semibold text-center  text-2xl">
+        <div className="mt-4 bg-white text-red-600 font-semibold text-center  text-2xl">
           {errorMessage}
         </div>
       )}

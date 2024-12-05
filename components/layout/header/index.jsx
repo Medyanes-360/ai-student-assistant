@@ -41,7 +41,7 @@ export default function Header() {
   // console.log(conversations);
 
   return (
-    <header className="border-b min-h-[80px] flex items-center  p-4 bg-gray-800 text-white dark:bg-gray-900 dark:text-gray-100 fixed w-full z-50">
+    <header className=" shadow-2xl min-h-[80px] flex items-center  p-4 bg-gray-800 text-white dark:bg-gray-900 dark:text-gray-100 fixed w-full z-50">
       <div className="container mx-auto flex justify-between items-center ">
         <h1 className="text-xl font-bold hover:text-indigo-400 transition-colors duration-200">
           <Link href="/">SpeakBuddy</Link>

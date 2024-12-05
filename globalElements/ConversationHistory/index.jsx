@@ -69,17 +69,17 @@ const ConversationHistory = () => {
   }
 
   return (
-    <div className="flex flex-col  bg-black/10 shadow-inner h-screen mt-[80px] overflow-y-hidden">
+    <div className="flex flex-col shadow-inner h-screen pt-[80px] overflow-y-hidden w-full">
       {conversations.length === 0 && (
         <p className="text-gray-600 dark:text-gray-400 mb-4 text-center ">
-          Henüz bir konuşma yok.
+          Nothing to show yet.
         </p>
       )}
       {conversations.length > 0 && (
         <div
           onScroll={handleScrollTop}
           ref={containerRef}
-          className="space-y-4 pt-4 h-full px-4 md:px-24 lg:px-32 overflow-y-scroll"
+          className="flex flex-col pt-4 h-full w-full px-4  overflow-y-scroll md:px-24 lg:px-32"
         >
           {conversations
             ?.slice()
@@ -95,7 +95,7 @@ const ConversationHistory = () => {
                     : { delay: 0 }
                 }
                 onMouseUp={handleTextSelection}
-                key={conv.createdAt}
+                key={index}
                 className="flex flex-col space-y-2 max-h-[700px]"
               >
                 {/* Kullanıcı Mesajı */}
@@ -105,8 +105,8 @@ const ConversationHistory = () => {
                   animate={{ x: 0 }}
                   transition={{ delay: 0.1 }}
                   onMouseUp={handleTextSelection}
-                  key={conv.createdAt}
-                  className="self-end  max-w-[70%] bg-blue-500  rounded-tl-[40px] rounded-bl-[40px] rounded-br-[40px] text-black p-4 rounded-lg shadow-md"
+                  key={index}
+                  className="self-end  max-w-[70%] bg-blue-500  rounded-tl-[40px] rounded-bl-[40px] rounded-br-[40px] text-black p-6 rounded-lg shadow-md"
                 >
                   <p className="text-base text-white">{conv.userInput}</p>
                   <p className="text-xs text-gray-200 mt-1">
@@ -119,7 +119,7 @@ const ConversationHistory = () => {
                   animate={{ x: 0 }}
                   transition={{ delay: 0.1 }}
                   onMouseUp={handleTextSelection}
-                  className="self-start max-w-[70%] relative bg-[#EEEEEE] dark:bg-gray-700 text-gray-800 dark:text-gray-200 p-4 rounded-tl-[40px] rounded-bt-[40px] rounded-br-[40px] rounded-tr-[40px] shadow-md"
+                  className="self-start max-w-[70%] relative bg-[#EEEEEE] dark:bg-gray-700 text-gray-800 dark:text-gray-200 p-6 rounded-tl-[40px] rounded-bt-[40px] rounded-br-[40px] rounded-tr-[40px] shadow-md"
                 >
                   <p className="text-base">{conv.assistantResponse}</p>
                   <p className="text-xs mb-2 text-gray-500 dark:text-gray-400 mt-1">

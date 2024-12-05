@@ -4,12 +4,10 @@ import NextButton from "@/globalElements/Button";
 import Image from "next/image";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
+import { FaArrowRight } from "react-icons/fa6";
 export default function HomePage() {
   const { data: session, status } = useSession();
   const [loading, setLoading] = useState(false);
-
-  console.log("Session Data:", session);
-  console.log("Session Status:", status);
 
   if (!status || status === "loading") {
     return (
@@ -22,25 +20,31 @@ export default function HomePage() {
   if (status === "authenticated") {
     return (
       <div className="h-screen flex flex-col justify-center items-center bg-gradient-to-r from-violet-900 to-violet-600">
-        <h1 className="text-4xl font-bold text-white mb-8">
-          Welcome to SpeakBuddy!
-        </h1>
-        <div className="flex space-x-6">
-          <Link href="/games">
-            <NextButton className="bg-purple-600 hover:bg-purple-700 text-white py-3 px-8 rounded-lg text-lg transition duration-150 ease-in-out">
-              Games
-            </NextButton>
-          </Link>
-          <Link href="/chat">
-            <NextButton className="bg-blue-600 hover:bg-blue-700 text-white py-3 px-8 rounded-lg text-lg transition duration-150 ease-in-out">
-              SpeakBuddy
-            </NextButton>
-          </Link>
-          <Link href="/learn">
-            <NextButton className="bg-green-600 hover:bg-green-700 text-white py-3 px-8 rounded-lg text-lg transition duration-150 ease-in-out">
-              Learn
-            </NextButton>
-          </Link>
+        <div className="grid md:grid-cols-3 gap-4 md:gap-10 w-full h-full justify-center items-center max-w-7xl">
+          <div className="aspect-square gap-6 flex flex-col justify-center items-center">
+            <p className="text-white text-3xl md:text-5xl">Games</p>
+            <Link href="/games">
+              <NextButton className=" aspect-square bg-purple-600 hover:bg-purple-700 text-white py-3 px-8 rounded-lg text-lg hover:scale-110 hover:-translate-y-2 transition-all duration-200 ease-in-out">
+                <FaArrowRight fontSize={32} />
+              </NextButton>
+            </Link>
+          </div>
+          <div className="aspect-square gap-6 flex flex-col justify-center items-center">
+            <p className="text-white text-3xl md:text-5xl">SpeakBuddy</p>
+            <Link href="/chat">
+              <NextButton className=" aspect-square bg-blue-600 hover:bg-blue-700 text-white py-3 px-8 rounded-lg text-lg hover:scale-110 hover:-translate-y-2 transition-all duration-200 ease-in-out">
+                <FaArrowRight fontSize={32} />
+              </NextButton>
+            </Link>
+          </div>
+          <div className="aspect-square gap-6 flex flex-col justify-center items-center">
+            <p className="text-white text-3xl md:text-5xl">Learn</p>
+            <Link href="/learn">
+              <NextButton className=" aspect-square bg-green-600 hover:bg-green-700 text-white py-3 px-8 rounded-lg text-lg hover:scale-110 hover:-translate-y-2 transition-all duration-200 ease-in-out">
+                <FaArrowRight fontSize={32} />
+              </NextButton>
+            </Link>
+          </div>
         </div>
       </div>
     );
@@ -73,13 +77,13 @@ export default function HomePage() {
         </div>
 
         {/* Sağ Sütun */}
-        <div className="w-full sm:w-1/2 px-4">
+        <div className="w-full h-full flex justify-center items-center aspect-square sm:w-1/2 px-4 bg-contain bg-[url('/images/blob.svg')]">
           <Image
-            src="/images/ai-speech.svg"
+            src="/images/ai-child.png"
             alt="Image of a kid learning"
-            width={500}
-            height={500}
-            className="rounded-lg shadow-xl ml-auto"
+            width={400}
+            height={400}
+            className="max-w-xs lg:max-w-full"
           />
         </div>
       </div>
