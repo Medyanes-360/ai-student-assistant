@@ -22,7 +22,6 @@ export default async function handler(req, res) {
       transcribedText: transcribedText,
     });
   } catch (aiError) {
-    console.log("AiError", aiError);
     return res.status(500).json({
       status: "error",
       message: aiError || "Error processing audio with AI",

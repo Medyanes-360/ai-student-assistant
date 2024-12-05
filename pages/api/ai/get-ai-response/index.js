@@ -6,7 +6,6 @@ import {
   speechToTextWhisperAPI,
   textToSpeechAPI,
 } from "@/services/gptOperations";
-import { createNewData } from "@/services/servicesOperations";
 import { getFormDataWithFormidable } from "@/utils/formidable";
 import { getServerSession } from "next-auth";
 
@@ -60,12 +59,6 @@ export default async function handler(req, res) {
 
     // ai ın  cevap textini sese dönüştür:
 
-    const conversation = await createNewData("conversation", {
-      userId: session.user.id,
-      userInput: transcribedText,
-      assistantResponse: aiResponse,
-    });
-
     // AI'ın cevap textini sese dönüştür
     const audioArrayBuffer = await textToSpeechAPI(aiResponse);
 
@@ -86,7 +79,6 @@ export default async function handler(req, res) {
       },
     });
   } catch (aiError) {
-    console.log("AiError", aiError);
     return res.status(500).json({
       status: "error",
       message: aiError || "Error processing audio with AI",

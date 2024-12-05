@@ -26,12 +26,8 @@ export default async function handler(req, res) {
   }
 
   try {
-    console.log("Kullanıcı kontrol ediliyor...");
-
     // Kullanıcı zaten var mı kontrol et
     const existingUser = await getDataByUnique("user", { email });
-
-    console.log("existingUser", existingUser);
 
     // Eğer getDataByUnique fonksiyonu hata dönerse
     if (existingUser) {

@@ -81,7 +81,6 @@ export default function Register() {
             width={500}
             height={1080}
             placeholder="empty"
-            onLoadingComplete={(img) => console.log(img.naturalWidth)}
           />
         </div>
       </div>

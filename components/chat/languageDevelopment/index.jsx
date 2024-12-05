@@ -65,7 +65,7 @@ const LanguageDevelopment = () => {
     }
   }, []);
   // END
-  console.log(conversations);
+
   // Tooltip içeriğini dinamik olarak oluşturma fonksiyonu
   const getTooltipContent = (word) => {
     const content = wordData[word.toLowerCase()];

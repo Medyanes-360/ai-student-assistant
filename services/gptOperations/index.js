@@ -74,7 +74,7 @@ export const GPT4oAPI = async (conversationHistory, lastUserMessage) => {
   ];
 
   const completion = await openai.chat.completions.create({
-    model: "ft:gpt-4o-2024-08-06:personal::AaXK73ve",
+    model: "ft:gpt-4o-2024-08-06:personal::AamIiq2A",
     audio: { voice: "alloy", format: "wav" },
     messages: messages,
 

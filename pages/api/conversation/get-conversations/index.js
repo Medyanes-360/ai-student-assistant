@@ -18,8 +18,6 @@ export default async function handler(req, res) {
   try {
     // örnek istek: /api/conversation/get-conversations?skip=20&take=20  -> ilk 20 yi atla, sonraki 20 yi çek
     const { skip, take } = req.query;
-    console.log("skip: " + skip);
-    console.log("take: " + take);
 
     const conversations = await prisma["conversation"].findMany({
       skip: parseInt(skip),
@@ -39,7 +37,6 @@ export default async function handler(req, res) {
       conversations: conversations,
     });
   } catch (error) {
-    console.log(error);
     return res
       .status(500)
       .json({ status: "error", message: error.message || "Sunucu Hatası" });

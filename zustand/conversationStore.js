@@ -1,3 +1,4 @@
+import { postAPI } from "@/services/fetchApi";
 import { create } from "zustand";
 
 const useConversationStore = create((set, get) => ({
@@ -12,21 +13,23 @@ const useConversationStore = create((set, get) => ({
     }));
 
     const skip = get().conversations.length; // kaç tane conversationu geçecek?
-    const take = 10; // çekilecek miktar, 10 conversation = toplam 20 mesaj (10 speakbuddy 10 kullanıcı)
-    console.log("inside getconversations");
+    const take = 5; // çekilecek miktar, 10 conversation = toplam 20 mesaj (10 speakbuddy 10 kullanıcı)
+
     const res = await fetch(
       `/api/conversation/get-conversations?skip=${skip}&take=${take}`
     );
 
     const json = await res.json();
-    console.log(json);
+
     if (!json.success) {
       // hata gönder.
     }
-    console.log("after jsonsuccess");
-    const newConversations = json.conversations;
-    console.log("after destructure");
 
+    const newConversations = json.conversations;
+    console.log("yeiler:");
+    console.log(newConversations);
+    console.log("eskiler:");
+    console.log(get().conversations);
     set((state) => ({
       ...state,
       loading: false,
@@ -38,15 +41,16 @@ const useConversationStore = create((set, get) => ({
       ...state,
       loading: true,
     }));
-    const req = fetch(`/api/conversation/create-conversation`, {
-      body: { userText: userText, aiText: aiText },
+    const req = postAPI(`/conversation/create-conversation`, {
+      userText: userText,
+      aiText: aiText,
     });
     req
       .then((res) => {
         if (res.success) {
           set((state) => ({
             ...state,
-            conversations: [...state.conversations, res.conversation],
+            conversations: [res.conversation, ...state.conversations],
           }));
         } else {
         }

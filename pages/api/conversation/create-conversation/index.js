@@ -17,14 +17,11 @@ export default async function handler(req, res) {
 
   try {
     const { userText, aiText } = req.body;
+    console.log(userText, aiText);
 
     const conversation = await prisma["conversation"].create({
       data: {
-        user: {
-          connect: {
-            id: session.user.id,
-          },
-        },
+        userId: session.user.id,
         userInput: userText,
         assistantResponse: aiText,
       },
@@ -36,6 +33,7 @@ export default async function handler(req, res) {
       conversation: conversation,
     });
   } catch (error) {
+    console.log(error);
     return res
       .status(500)
       .json({ status: "error", message: error.message || "Sunucu Hatası" });
