@@ -135,9 +135,9 @@ const LanguageDevelopment = () => {
           {userText && (
             <div className="mt-8 flex flex-col gap-y-2">
               <h2 className="text-xl sm:text-2xl font-semibold text-gray-800 dark:text-gray-200 mb-4">
-                Senin Metnin:
+                You:
               </h2>
-              <p className="text-gray-700 dark:text-gray-300 whitespace-pre-wrap">
+              <p className="flex flex-wrap  text-gray-700 dark:text-gray-300 whitespace-pre-wrap">
                 {renderTextWithTooltips(userText)}
               </p>
               <TextToSpeech text={userText} />
@@ -149,7 +149,7 @@ const LanguageDevelopment = () => {
               <h2 className="text-xl sm:text-2xl font-semibold text-gray-800 dark:text-gray-200 mb-4">
                 SpeakBuddy:
               </h2>
-              <p className="text-gray-700 dark:text-gray-300 whitespace-pre-wrap">
+              <p className=" flex flex-wrap text-gray-700 dark:text-gray-300 whitespace-pre-wrap">
                 {renderTextWithTooltips(aiText)}
               </p>
               <TextToSpeech text={aiText} />
