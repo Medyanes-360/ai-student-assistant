@@ -5,6 +5,8 @@ import TextToSpeech from "../TextToSpeech";
 import { SiGoogletranslate } from "react-icons/si";
 import useConversationStore from "@/zustand/conversationStore";
 import { MotionDiv } from "../motion";
+import Button from "../Button";
+import { Tooltip } from "react-tooltip";
 
 const ConversationHistory = () => {
   const conversations = useConversationStore((state) => state.conversations);
@@ -12,10 +14,10 @@ const ConversationHistory = () => {
     (state) => state.getConversations
   );
   const [loading, setLoading] = useState(false);
-
   const [isInitialLoad, setIsInitialLoad] = useState(true);
-
   const containerRef = useRef(null);
+  const mockTranslate =
+    "Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque sed quod ex iure architecto magnam obcaecati quidem animi expedita temporibus, officia voluptates veniam ipsa, aperiam quam cumque? Cum, nemo non!";
 
   const loadMoreConversations = async (elementId) => {
     setLoading(true);
@@ -49,6 +51,10 @@ const ConversationHistory = () => {
       setIsInitialLoad(false);
     }
   });
+
+  const handleTooltip = () => {
+    console.log("asdasd");
+  };
 
   return (
     <div className="flex flex-col shadow-inner h-screen pt-[80px] overflow-y-hidden w-full">
@@ -98,7 +104,14 @@ const ConversationHistory = () => {
                   <p className="text-xs text-gray-200 mt-1">
                     {new Date(conv.createdAt).toLocaleString()}
                   </p>
-                  <SiGoogletranslate className="self-end  bottom-3 right-5 w-6 h-6 text-white cursor-pointer hover:text-blue-500" />
+
+                  <SiGoogletranslate
+                    id="clickable"
+                    data-tooltip-content={mockTranslate}
+                    data-tooltip-id="tooltip"
+                    onClick={handleTooltip}
+                    className="mt-2 bottom-3 right-5 w-6 h-6 text-white cursor-pointer hover:text-blue-500 duration-200"
+                  />
                 </MotionDiv>
 
                 <MotionDiv
@@ -113,7 +126,13 @@ const ConversationHistory = () => {
                   </p>
                   <TextToSpeech text={conv.assistantResponse} />
 
-                  <SiGoogletranslate className="absolute bottom-3 right-5 w-6 h-6 text-white cursor-pointer hover:text-blue-500" />
+                  <SiGoogletranslate
+                    id="clickable"
+                    data-tooltip-content={mockTranslate}
+                    data-tooltip-id="tooltip"
+                    onClick={handleTooltip}
+                    className="absolute bottom-5 right-5 w-6 h-6 text-white cursor-pointer hover:text-blue-500 duration-200"
+                  />
 
                   <div className="absolute -bottom-5 -left-6">
                     <SiGoogleassistant className="w-6 h-6" />
@@ -123,6 +142,30 @@ const ConversationHistory = () => {
             ))}
         </div>
       )}
+      <Tooltip
+        id="tooltip"
+        place="top"
+        effect="solid"
+        anchorSelect="#clickable"
+        clickable
+        openOnClick
+        className="text-lg bg-white text-gray-800 p-4 rounded-lg shadow-lg z-10 absolute"
+        style={{
+          backgroundColor: "#ffffff",
+          color: "#000000",
+          borderRadius: "8px",
+          boxShadow: "0 4px 12px rgba(0, 0, 0, 0.15)",
+          zIndex: 9999999,
+          padding: "0px",
+        }}
+        render={({ content, activeAnchor }) => {
+          return (
+            <div className="p-4 max-w-md flex flex-col gap-1">
+              <p className="m-0">{content}</p>
+            </div>
+          );
+        }}
+      />
     </div>
   );
 };
