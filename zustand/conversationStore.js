@@ -1,4 +1,4 @@
-import { postAPI } from "@/services/fetchApi";
+import { getAPI, postAPI } from "@/services/fetchApi";
 import { create } from "zustand";
 import useChatStore from "./chatStore";
 
@@ -16,17 +16,12 @@ const useConversationStore = create((set, get) => ({
     const skip = get().conversations.length; // kaç tane conversationu geçecek?
     const take = 5; // çekilecek miktar, 10 conversation = toplam 20 mesaj (10 speakbuddy 10 kullanıcı)
 
-    const res = await fetch(
-      `/api/conversation/get-conversations?skip=${skip}&take=${take}`
+    const res = await getAPI(
+      `/conversation/get-conversations?skip=${skip}&take=${take}`
     );
 
-    const json = await res.json();
-
-    if (!json.success) {
-      // hata gönder.
-    }
-
-    const newConversations = json.conversations;
+    const newConversations = res.conversations;
+    console.log(newConversations);
 
     set((state) => ({
       ...state,
@@ -39,10 +34,10 @@ const useConversationStore = create((set, get) => ({
       useChatStore.getState().aiText != "";
 
     if (!isLastMessagesAvailable) {
-      useChatStore.getState().setUserText(get().conversations[0].userInput);
+      useChatStore.getState().setUserText(get().conversations[0]?.userInput);
       useChatStore
         .getState()
-        .setAiText(get().conversations[0].assistantResponse);
+        .setAiText(get().conversations[0]?.assistantResponse);
     }
   },
   createConversation: async (userText, aiText) => {

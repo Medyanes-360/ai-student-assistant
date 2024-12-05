@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import useConversationStore from "./conversationStore";
+import { formDataPostAPI } from "@/services/fetchApi";
 
 const useChatStore = create((set, get) => ({
   loading: false,
@@ -25,16 +26,9 @@ const useChatStore = create((set, get) => ({
 
     formData.append("conversations", JSON.stringify(lastTenConversation));
 
-    const aiResponse = await fetch("/api/ai/get-ai-response", {
-      method: "POST",
+    const aiResponse = await formDataPostAPI("/ai/get-ai-response", formData);
 
-      body: formData,
-    });
-    const json = await aiResponse.json();
-    if (!json.success) {
-      // hata gönder.
-    }
-    const { aiAudioUrl, aiText, userText } = json.data;
+    const { aiAudioUrl, aiText, userText } = aiResponse.data;
     set((state) => ({
       ...state,
       loading: false,

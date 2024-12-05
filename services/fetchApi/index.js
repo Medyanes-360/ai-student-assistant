@@ -112,4 +112,33 @@ const deleteAPI = async (
   return data;
 };
 
-export { postAPI, getAPI, deleteAPI, putAPI };
+const formDataPostAPI = async (URL, formData, method = "POST") => {
+  try {
+    if (!process.env.NEXT_PUBLIC_API_URL || !URL) {
+      throw new Error("URL bulunamadı!");
+    }
+    const data = await fetch(`${process.env.NEXT_PUBLIC_API_URL + URL}`, {
+      method: method,
+
+      body: formData,
+      cache: "no-store",
+      // cache önemli! her çalıştığında cache'deki veri yerine -> güncel veriyi almasını sağlar.
+      // bu olmaz ise üncel veriyi almayabiliyor dikkat et.
+      // Dinamik sayfalarda burası kullanılıyorsa o sayfalara -> export const dynamic = 'force-dynamic' ekle!
+    })
+      .then((res) => {
+        if (res.url.includes("/notification") && res.redirected) {
+          return (window.location.href = res.url);
+        } else {
+          return res.json();
+        }
+      })
+      .catch((err) => console.error(err));
+
+    return data;
+  } catch (err) {
+    throw new Error(`API request failed: ${err}`);
+  }
+};
+
+export { postAPI, getAPI, deleteAPI, putAPI, formDataPostAPI };
