@@ -1,5 +1,4 @@
 "use client";
-import React from "react";
 import { useState, useRef, useEffect, useCallback } from "react";
 import { FaMicrophoneLines } from "react-icons/fa6";
 import { FaRegPauseCircle } from "react-icons/fa";
@@ -90,7 +89,6 @@ export default function AudioRecorder({ onRecordingComplete }) {
 
   const handleRecordingStop = () => {
     const blob = new Blob(audioChunksRef.current, { type: "audio/wav" });
-    console.log(blob.size);
 
     if (blob.size < MIN_BLOB_SIZE) {
       setErrorMessage("Ses kaydı en az 1 saniye olmalıdır.");

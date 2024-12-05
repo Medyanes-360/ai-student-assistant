@@ -9,7 +9,7 @@ import { usePathname } from "next/navigation";
 import useConversationStore from "@/zustand/conversationStore";
 
 export default function Header() {
-  // const conversations = useConversationStore((state) => state.conversations);
+  const conversations = useConversationStore((state) => state.conversations);
   // const getConversations = useConversationStore(
   //   (state) => state.getConversations
   // );
@@ -38,7 +38,6 @@ export default function Header() {
   // const handleGetConversations = async () => {
   //   await getConversations();
   // };
-  // console.log(conversations);
 
   return (
     <header className=" shadow-2xl min-h-[80px] flex items-center  p-4 bg-gray-800 text-white dark:bg-gray-900 dark:text-gray-100 fixed w-full z-50">

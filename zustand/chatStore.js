@@ -21,10 +21,7 @@ const useChatStore = create((set, get) => ({
     //son 10 conversation'u yükle:
     const lastTenConversation = useConversationStore
       .getState()
-      .conversations.sort(
-        (a, b) => new Date(a.createdAt) - new Date(b.createdAt)
-      )
-      .slice(0, 10);
+      .conversations.slice(0, 10);
 
     formData.append("conversations", JSON.stringify(lastTenConversation));
 
@@ -45,6 +42,7 @@ const useChatStore = create((set, get) => ({
       aiText,
       userText,
     }));
+    await useConversationStore.getState().createConversation(userText, aiText);
   },
   setAiAudioBase64: (audioBase64) =>
     set((state) => ({
