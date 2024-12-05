@@ -5,8 +5,8 @@ import { Tooltip } from "react-tooltip";
 import "react-tooltip/dist/react-tooltip.css";
 import TextToSpeech from "@/globalElements/TextToSpeech";
 import useChatStore from "@/zustand/chatStore";
-import AudioRecorder from "@/globalElements/AudioRecorder";
 import useConversationStore from "@/zustand/conversationStore";
+import PushToTalk from "@/globalElements/recorder";
 
 const LanguageDevelopment = () => {
   const { aiText, userText, aiAudioUrl, setAiText, setUserText } = useChatStore(
@@ -147,7 +147,7 @@ const LanguageDevelopment = () => {
           {aiText && (
             <div className="mt-8 flex flex-col gap-y-2">
               <h2 className="text-xl sm:text-2xl font-semibold text-gray-800 dark:text-gray-200 mb-4">
-                Geri Bildirim:
+                SpeakBuddy:
               </h2>
               <p className="text-gray-700 dark:text-gray-300 whitespace-pre-wrap">
                 {renderTextWithTooltips(aiText)}
@@ -165,7 +165,7 @@ const LanguageDevelopment = () => {
               width={1920}
               height={1080}
             />
-            <AudioRecorder onRecordingComplete={handleRecordingComplete} />
+            <PushToTalk onRecordingComplete={handleRecordingComplete} />
           </div>
         </div>
         <Tooltip
