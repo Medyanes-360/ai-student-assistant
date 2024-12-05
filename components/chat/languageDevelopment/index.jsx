@@ -7,6 +7,8 @@ import TextToSpeech from "@/globalElements/TextToSpeech";
 import useChatStore from "@/zustand/chatStore";
 import useConversationStore from "@/zustand/conversationStore";
 import PushToTalk from "@/globalElements/recorder";
+import Button from "@/globalElements/Button";
+import { FaCheck } from "react-icons/fa6";
 
 const LanguageDevelopment = () => {
   const { aiText, userText, aiAudioUrl, setAiText, setUserText } = useChatStore(
@@ -36,24 +38,6 @@ const LanguageDevelopment = () => {
     }
   }, [aiAudioUrl]);
   //
-  //word data : you kelimesine tıklayınca örneği görebilirsiniz.
-  const wordData = {
-    you: {
-      pronunciation: "youː",
-      translations: ["Sen", "Siz"],
-      examples: ["How are you?", "I see you."],
-    },
-    Hello: {
-      pronunciation: "həˈləʊ",
-      translations: ["Merhaba"],
-      examples: ["Hello, how are you?", "Hello everyone!"],
-    },
-    today: {
-      pronunciation: "təˈdeɪ",
-      translations: ["Bugün"],
-      examples: ["What are you doing today?", "Today is a great day!"],
-    },
-  };
 
   // START: -- BU BÖLÜM YALNIZCA İLK /CHAT'E GİRİLDİĞİNDE SON 10 MESAJI ÇEKMEK İÇİN VAR.
 
@@ -69,59 +53,22 @@ const LanguageDevelopment = () => {
   }, []);
   // END
 
-  // Tooltip içeriğini dinamik olarak oluşturma fonksiyonu
-  const getTooltipContent = (word) => {
-    const content = wordData[word.toLowerCase()];
-    if (!content) return "Bu kelime için bilgi yok.";
-    return `
-        <div style="padding: 16px; max-width: 300px;">
-          <h3 style="font-size: 18px; margin-bottom: 8px; font-weight: bold;">${word}</h3>
-          <p style="margin: 0;"><strong>Pronunciation:</strong> ${
-            content.pronunciation
-          }</p>
-          <p style="margin: 0;"><strong>Translations:</strong> ${content.translations.join(
-            ", "
-          )}</p>
-          <p><strong>Examples:</strong></p>
-          <ul style="padding-left: 20px; margin: 0;">
-            ${content.examples.map((example) => `<li>${example}</li>`).join("")}
-          </ul>
-          <div style="display: flex; justify-content: space-between; margin-top: 16px;">
-            <button style="
-              flex: 1;
-              background-color: #3B82F6;
-              color: white;
-              border: none;
-              padding: 8px 12px;
-              margin-right: 4px;
-              border-radius: 8px;
-              cursor: pointer;">
-              Learned
-            </button>
-            <button style="
-              flex: 1;
-              background-color: #10B981;
-              color: white;
-              border: none;
-              padding: 8px 12px;
-              border-radius: 8px;
-              cursor: pointer;">
-              Learn
-            </button>
-          </div>
-        </div>
-      `;
-  };
-
-  // Metni kelimelere bölüp tooltip ekleyen fonksiyon
   const renderTextWithTooltips = (text) => {
+    const data = {
+      word: "You",
+      pronunciation: "youː",
+      translations: ["Sen", "Siz"],
+      examples: ["How are you?", "I see you."],
+    };
+
     return text.split(" ").map((word, index) => (
       <span
+        id="clickable"
         key={index}
+        // Content olarak sadece string kabul ediyor.
+        data-tooltip-content={JSON.stringify(data)}
         data-tooltip-id="tooltip"
-        data-tooltip-html={getTooltipContent(word)} // Dinamik içerik
-        // Tooltip'i tıklama ile aç
-        className="cursor-pointer text-blue-500 underline mx-1"
+        className="cursor-pointer transition-all hover:scale-105 hover:-translate-y-[2px] duration-200 mx-1"
       >
         {word}
       </span>
@@ -172,15 +119,50 @@ const LanguageDevelopment = () => {
           id="tooltip"
           place="top"
           effect="solid"
+          anchorSelect="#clickable"
+          clickable
           openOnClick
           className="text-lg bg-white text-gray-800 p-4 rounded-lg shadow-lg z-10 absolute"
           style={{
-            backgroundColor: "#1E293B",
-            color: "#F8FAFC",
-            borderRadius: "12px",
-            padding: "16px",
+            backgroundColor: "#ffffff",
+            color: "#000000",
+            borderRadius: "8px",
             boxShadow: "0 4px 12px rgba(0, 0, 0, 0.15)",
-            zIndex: 10,
+            zIndex: 9999999,
+            padding: "0px",
+          }}
+          render={({ content, activeAnchor }) => {
+            // String contenti dönüştürüyoruz
+            const data = JSON.parse(content);
+            return (
+              <div className="p-4 max-w-md flex flex-col gap-1">
+                <h3 className="text-2xl font-bold py-2 border-b border-black/50">
+                  {data?.word}
+                </h3>
+                <div className="flex flex-col ">
+                  <p className="m-0">
+                    <strong>Pronunciation:</strong> {data?.pronunciation}
+                  </p>
+                  <p className="m-0">
+                    <strong>Translations:</strong>{" "}
+                    {data?.translations.join(", ")}
+                  </p>
+                  <p>
+                    <strong>Examples:</strong>
+                  </p>
+                  <ul className="pl-5 m-0 list-disc">
+                    {data?.examples.map((example, index) => (
+                      <li key={index}>{example}</li>
+                    ))}
+                  </ul>
+                  <div className="flex justify-between mt-4">
+                    <Button className="flex w-full justify-center gap-2 items-center !opacity-100 bg-green-500 text-white border-none py-1 px-2 rounded-lg">
+                      Learned <FaCheck />
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            );
           }}
         />
       </div>
