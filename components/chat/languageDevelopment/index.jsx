@@ -9,7 +9,9 @@ import AudioRecorder from "@/globalElements/AudioRecorder";
 import useConversationStore from "@/zustand/conversationStore";
 
 const LanguageDevelopment = () => {
-  const { aiText, userText, aiAudioUrl } = useChatStore((state) => state);
+  const { aiText, userText, aiAudioUrl, setAiText, setUserText } = useChatStore(
+    (state) => state
+  );
   const getAiResponse = useChatStore((state) => state.getAiResponse);
   const conversations = useConversationStore((state) => state.conversations);
   const getConversations = useConversationStore(
@@ -54,6 +56,7 @@ const LanguageDevelopment = () => {
   };
 
   // START: -- BU BÖLÜM YALNIZCA İLK /CHAT'E GİRİLDİĞİNDE SON 10 MESAJI ÇEKMEK İÇİN VAR.
+
   const isFetched = useRef(true);
   useEffect(() => {
     if (!conversations || conversations.length == 0) {

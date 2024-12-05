@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import { useState } from "react";
 import Button from "@/globalElements/Button";
 import Input from "@/globalElements/Input";
 import Label from "@/globalElements/Label";
@@ -45,7 +45,6 @@ const FormLoginWrapper = () => {
         setError("Wrong Cridentials");
       }
     } catch (error) {
-      console.log(error);
       setError(error);
     } finally {
       setLoading(false);

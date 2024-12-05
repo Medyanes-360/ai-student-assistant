@@ -1,5 +1,6 @@
 import { postAPI } from "@/services/fetchApi";
 import { create } from "zustand";
+import useChatStore from "./chatStore";
 
 const useConversationStore = create((set, get) => ({
   loading: false,
@@ -26,15 +27,23 @@ const useConversationStore = create((set, get) => ({
     }
 
     const newConversations = json.conversations;
-    console.log("yeiler:");
-    console.log(newConversations);
-    console.log("eskiler:");
-    console.log(get().conversations);
+
     set((state) => ({
       ...state,
       loading: false,
       conversations: [...state.conversations, ...newConversations],
     }));
+
+    const isLastMessagesAvailable =
+      useChatStore.getState().userText != "" &&
+      useChatStore.getState().aiText != "";
+
+    if (!isLastMessagesAvailable) {
+      useChatStore.getState().setUserText(get().conversations[0].userInput);
+      useChatStore
+        .getState()
+        .setAiText(get().conversations[0].assistantResponse);
+    }
   },
   createConversation: async (userText, aiText) => {
     set((state) => ({
