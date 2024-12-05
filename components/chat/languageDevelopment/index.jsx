@@ -107,7 +107,7 @@ const LanguageDevelopment = () => {
         <div className="flex-1">
           <div className="flex items-center flex-col gap-4">
             <Image
-              src="/images/person.jpg"
+              src="/images/person.png"
               alt="person"
               width={1920}
               height={1080}
