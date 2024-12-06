@@ -110,9 +110,11 @@ const ConversationHistory = () => {
                     data-tooltip-content={mockTranslate}
                     data-tooltip-id="tooltip"
                     onClick={handleTooltip}
-                    className="mt-2 bottom-3 right-5 w-6 h-6 text-white cursor-pointer hover:text-blue-500 duration-200"
+                    className="mt-2 bottom-3 right-5 w-6 h-6 text-white cursor-pointer hover:text-indigo-500 duration-200"
                   />
                 </MotionDiv>
+
+                {/* AI Mesajı */}
 
                 <MotionDiv
                   initial={{ x: -10 }}
@@ -124,18 +126,16 @@ const ConversationHistory = () => {
                   <p className="text-xs mb-2  text-white  mt-1">
                     {new Date(conv.createdAt).toLocaleString()}
                   </p>
-                  <TextToSpeech text={conv.assistantResponse} />
+                  <div className="flex w-full items-center justify-between">
+                    <TextToSpeech text={conv.assistantResponse} />
 
-                  <SiGoogletranslate
-                    id="clickable"
-                    data-tooltip-content={mockTranslate}
-                    data-tooltip-id="tooltip"
-                    onClick={handleTooltip}
-                    className="absolute bottom-5 right-5 w-6 h-6 text-white cursor-pointer hover:text-blue-500 duration-200"
-                  />
-
-                  <div className="absolute -bottom-5 -left-6">
-                    <SiGoogleassistant className="w-6 h-6" />
+                    <SiGoogletranslate
+                      id="clickable"
+                      data-tooltip-content={mockTranslate}
+                      data-tooltip-id="tooltip"
+                      onClick={handleTooltip}
+                      className=" w-6 h-6 text-white cursor-pointer hover:text-indigo-500 duration-200"
+                    />
                   </div>
                 </MotionDiv>
               </MotionDiv>

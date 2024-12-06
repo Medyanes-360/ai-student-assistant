@@ -1,66 +1,36 @@
 "use client";
-import Speech from "react-text-to-speech";
+import { FaPlay, FaStarHalfStroke, FaStop } from "react-icons/fa6";
+import { useSpeech } from "react-text-to-speech";
 const TextToSpeech = ({ text }) => {
-  // const [isPaused, setIsPaused] = useState(false);
-  // const [utterance, setUtterance] = useState(null);
-  // useEffect(() => {
-  //   const synth = window.speechSynthesis;
-  //   // Function to filter emojis
-  //   const cleanText = (input) =>
-  //     input?.replace(
-  //       /[\u{1F600}-\u{1F6FF}|\u{2600}-\u{26FF}|\u{2700}-\u{27BF}]/gu,
-  //       ""
-  //     );
-
-  //   const filteredText = cleanText(text);
-  //   const u = new SpeechSynthesisUtterance(filteredText);
-  //   u.lang = "en-US";
-  //   u.volume = 0.5;
-  //   // Handle voices
-  //   const setVoice = () => {
-  //     const voices = synth?.getVoices();
-  //     const femaleVoice = voices.find(
-  //       (voice) => voice.name.includes("Female") || voice.name.includes("en-US")
-  //     );
-  //     if (femaleVoice) u.voice = femaleVoice;
-  //     setUtterance(u);
-  //   };
-
-  //   if (synth.getVoices().length > 0) {
-  //     setVoice();
-  //   } else {
-  //     synth.addEventListener("voiceschanged", setVoice);
-  //   }
-
-  //   return () => {
-  //     synth.cancel();
-  //     synth.removeEventListener("voiceschanged", setVoice);
-  //   };
-  // }, [text]);
-  // const handlePlay = () => {
-  //   const synth = window.speechSynthesis;
-  //   if (!utterance) return;
-  //   if (synth.speaking && !isPaused) {
-  //     synth.pause();
-  //     setIsPaused(true);
-  //   } else if (isPaused) {
-  //     synth.resume();
-  //     setIsPaused(false);
-  //   } else {
-  //     synth.cancel();
-  //     synth.speak(utterance);
-  //     setIsPaused(false);
-  //   }
-  // };
+  const {
+    Text, // Component that returns the modified text property
+    speechStatus, // String that stores current speech status
+    isInQueue, // Boolean that stores whether a speech utterance is either being spoken or present in queue
+    start, // Function to start the speech or put it in queue
+    pause, // Function to pause the speech
+    stop, // Function to stop the speech or remove it from queue
+  } = useSpeech({ text });
   return (
     <>
-      {/* <button onClick={handlePlay}>{isPaused ? <FaPause /> : <FaPlay />}</button> */}
-      <Speech
-        text={text}
-        voiceURI="Google US English"
-        lang="en-US"
-        textAsButton={true}
-      />
+      <div style={{ display: "flex", flexDirection: "column", rowGap: "1rem" }}>
+        <div style={{ display: "flex", columnGap: "0.5rem" }}>
+          {speechStatus !== "started" ? (
+            <button
+              className="p-1 transition-all duration-200 hover:text-indigo-500 hover:scale-110"
+              onClick={start}
+            >
+              <FaPlay fontSize={22} />
+            </button>
+          ) : (
+            <button
+              className="p-1 transition-all duration-200 hover:text-indigo-500 hover:scale-110"
+              onClick={stop}
+            >
+              <FaStop fontSize={22} />
+            </button>
+          )}
+        </div>
+      </div>
     </>
   );
 };
