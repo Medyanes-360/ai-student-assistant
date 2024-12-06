@@ -51,8 +51,8 @@ const LanguageDevelopment = () => {
       }
       isFetched.current = true;
       getConversations();
-      setIsLoading(false);
     }
+    setIsLoading(false);
   }, []);
   // END
 
