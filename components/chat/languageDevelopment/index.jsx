@@ -19,6 +19,8 @@ const LanguageDevelopment = () => {
   const getConversations = useConversationStore(
     (state) => state.getConversations
   );
+  const [isLoading, setIsLoading] = useState(true);
+
   const handleRecordingComplete = async (blob) => {
     try {
       if (!blob) {
@@ -49,6 +51,7 @@ const LanguageDevelopment = () => {
       }
       isFetched.current = true;
       getConversations();
+      setIsLoading(false);
     }
   }, []);
   // END
@@ -74,14 +77,19 @@ const LanguageDevelopment = () => {
       </span>
     ));
   };
-
   return (
     <>
       <div className="flex flex-col-reverse gap-3 lg:flex-row pt-[80px] w-full px-4 md:px-0 ">
         <div className="bg-[#F4F4F4] h-full dark:bg-gray-800 rounded-lg shadow-lg p-8 w-full flex-grow-0 flex-shrink-0 basis-[70%] transition duration-200">
-          {!userText || !aiText ? (
+          {isLoading && (
             <div className="text-gray-800 dark:text-gray-200 w-full justify-center animate-pulse flex">
               Loading...
+            </div>
+          )}
+
+          {(!userText || !aiText) && !isLoading ? (
+            <div className="text-gray-800 dark:text-gray-200 w-full justify-center flex">
+              Nothing to show yet.
             </div>
           ) : (
             ""
