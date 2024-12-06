@@ -80,7 +80,10 @@ const PushToTalk = ({ onRecordingComplete }) => {
     <div style={{ textAlign: "center", marginTop: "20px" }}>
       <button
         onMouseDown={handleMouseDown}
+        onTouchStart={handleMouseDown}
         onMouseUp={handleMouseUp}
+        onTouchCancel={handleMouseUp}
+        onContextMenu={(e) => e.preventDefault()}
         onMouseLeave={isRecording ? handleMouseUp : undefined}
         className={`px-6 py-4 sm:py-6 aspect-square rounded-full font-semibold shadow-lg transition duration-200 transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-opacity-50 no-context ${
           isRecording
