@@ -4,19 +4,33 @@ import { FaMicrophoneLines } from "react-icons/fa6";
 
 const PushToTalk = ({ onRecordingComplete }) => {
   const [isRecording, setIsRecording] = useState(false);
-  const [timer, setTimer] = useState(0);
+  const [elapsedTime, setElapsedTime] = useState("00:00");
   const [errorMessage, setErrorMessage] = useState("");
   const mediaRecorderRef = useRef(null);
-  const timerIntervalRef = useRef(null);
   const audioChunksRef = useRef([]);
+  const recordingStartTimeRef = useRef(null);
+  const timerIntervalRef = useRef(null);
 
   const handleMouseDown = async () => {
     setErrorMessage("");
-    setTimer(0);
     setIsRecording(true);
+    recordingStartTimeRef.current = Date.now();
+
+    timerIntervalRef.current = setInterval(() => {
+      const now = Date.now();
+      const elapsed = now - recordingStartTimeRef.current;
+      const seconds = Math.floor(elapsed / 1000)
+        .toString()
+        .padStart(2, "0");
+      const milliseconds = Math.floor((elapsed % 1000) / 10)
+        .toString()
+        .padStart(2, "0");
+      setElapsedTime(`${seconds}:${milliseconds}`);
+    }, 10);
 
     if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
       setErrorMessage("Tarayıcınız mikrofon erişimini desteklemiyor.");
+      setIsRecording(false);
       return;
     }
 
@@ -31,8 +45,14 @@ const PushToTalk = ({ onRecordingComplete }) => {
       };
 
       mediaRecorderRef.current.onstop = () => {
+        clearInterval(timerIntervalRef.current);
+        setElapsedTime("00:00");
+
         const blob = new Blob(audioChunksRef.current, { type: "audio/wav" });
-        if (timer >= 1) {
+        const elapsedTimeInSeconds =
+          (Date.now() - recordingStartTimeRef.current) / 1000;
+
+        if (elapsedTimeInSeconds >= 1) {
           onRecordingComplete(blob);
         } else {
           setErrorMessage("Ses 1 saniyeden daha uzun olmalıdır.");
@@ -41,35 +61,19 @@ const PushToTalk = ({ onRecordingComplete }) => {
       };
 
       mediaRecorderRef.current.start();
-      startTimer();
     } catch (error) {
       setErrorMessage("Mikrofon erişimi reddedildi.");
+      setIsRecording(false);
+      clearInterval(timerIntervalRef.current);
     }
   };
 
   const handleMouseUp = () => {
     setIsRecording(false);
-    stopTimer();
+    clearInterval(timerIntervalRef.current);
     if (mediaRecorderRef.current) {
       mediaRecorderRef.current.stop();
     }
-  };
-
-  const startTimer = () => {
-    timerIntervalRef.current = setInterval(() => {
-      setTimer((prev) => {
-        if (prev >= 60) {
-          handleMouseUp();
-          return 60;
-        }
-        return parseFloat(prev + 0.01);
-      });
-    }, 10);
-  };
-
-  const stopTimer = () => {
-    clearInterval(timerIntervalRef.current);
-    timerIntervalRef.current = null;
   };
 
   return (
@@ -91,7 +95,7 @@ const PushToTalk = ({ onRecordingComplete }) => {
         )}
       </button>
       <div style={{ marginTop: "10px", fontSize: "18px" }}>
-        {isRecording ? `Süre: ${timer.toFixed(2)}s` : "Mikrofon hazır"}
+        {isRecording ? `Süre: ${elapsedTime}` : "Mikrofon hazır"}
       </div>
       {errorMessage && (
         <div style={{ color: "red", marginTop: "10px", fontSize: "14px" }}>
